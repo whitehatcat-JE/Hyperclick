@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class playerMovement : MonoBehaviour
 {
+    public UnityEvent damage;
+
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
@@ -26,5 +29,14 @@ public class playerMovement : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            damage.Invoke();
+            Destroy(other.gameObject.transform.parent.gameObject);
+        }
     }
 }
