@@ -23,6 +23,7 @@ public class boss : MonoBehaviour
     public GameObject rFirePoint;
 
     public GameObject bullet;
+    public GameObject target;
 
     public Rigidbody2D player;
 
@@ -37,13 +38,22 @@ public class boss : MonoBehaviour
     public Sprite wSprite;
     public Sprite nwSprite;
 
+    public float MAX_BULLET_DELAY = 1f;
+    public float MAX_TARGET_DELAY = 1f;
+
+    public float TARGET_LEFT = -6f;
+    public float TARGET_RIGHT = 6f;
+    public float TARGET_TOP = 3f;
+    public float TARGET_BOTTOM = -2f;
+
+    public float MIN_CENTER_DIS = 0.5f;
+
     private float targetAngle = 1f;
 
     private Direction curDir = Direction.S;
 
-    public float MAX_BULLET_DELAY = 1f;
-
     private float bulletDelay = 0f;
+    private float targetDelay = 0f;
 
     // Update is called once per frame
     void Update()
@@ -69,12 +79,25 @@ public class boss : MonoBehaviour
             // Shoots in direction currently facing
             //Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
             //Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
+
+            // Shoots in player direction
             GameObject leftBullet = Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
             leftBullet.transform.up = player.transform.position - leftBullet.transform.position;
             GameObject rightBullet = Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
             rightBullet.transform.up = player.transform.position - rightBullet.transform.position;
         }
 
+        targetDelay += Time.deltaTime;
+        if (targetDelay > MAX_TARGET_DELAY)
+        {
+            targetDelay = 0f;
+            Vector3 targetPos = new Vector3(0f, 0f, 0f);
+            while (Mathf.Abs(targetPos.x) + Mathf.Abs(targetPos.y) < MIN_CENTER_DIS)
+            {
+                targetPos = new Vector3(Random.Range(TARGET_LEFT, TARGET_RIGHT), Random.Range(TARGET_TOP, TARGET_BOTTOM), 0f);
+            }
+            GameObject newTarget = Instantiate(target, targetPos, Quaternion.Euler(Vector3.forward));
+        }
     }
 
     void updateRotation()

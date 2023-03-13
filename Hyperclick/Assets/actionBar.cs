@@ -12,7 +12,6 @@ public class actionBar : MonoBehaviour
     private float minHealthPos = -6.656f;
     private float minScale = 0f;
 
-    private float percent = 0f;
     private int STARTING_HEALTH = 10;
     private int health;
 
@@ -31,6 +30,12 @@ public class actionBar : MonoBehaviour
         health -= 1;
         if (health < 0) { health = STARTING_HEALTH; }
         updateHealth((float)health / (float) STARTING_HEALTH);
+    }
+
+    public void increaseHealth()
+    {
+        health += 1;
+        updateHealth((float)health / (float)STARTING_HEALTH);
     }
 
     void updateHealth(float percent)

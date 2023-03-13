@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bullet
   - Wall
+  - ActionBar
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Player
   - Boss
   - BulletCollisions
-  - 
+  - Target
   - 
   - 
   - 
