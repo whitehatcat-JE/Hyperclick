@@ -6,9 +6,17 @@ public class bulletMotion : MonoBehaviour
 {
     public GameObject self;
     public Rigidbody2D rdby;
+    public UnityEngine.Rendering.Universal.Light2D light;
 
     public Sprite spriteB;
     public Sprite spriteC;
+
+    public Sprite explodeA;
+    public Sprite explodeB;
+    public Sprite explodeC;
+    public Sprite explodeD;
+
+    public Collider2D collision;
 
     public SpriteRenderer displayedSprite;
 
@@ -17,6 +25,9 @@ public class bulletMotion : MonoBehaviour
     float MAX_TIME = 25f;
 
     float expireTime = 0f;
+    public float explodeSpeed = 0.05f;
+
+    bool dead = false;
 
     int collisionCount = 0;
     int MAX_COLLISIONS = 3;
@@ -30,17 +41,31 @@ public class bulletMotion : MonoBehaviour
     void Update()
     {
         expireTime += Time.deltaTime;
-        if (expireTime > MAX_TIME)
+        if (expireTime > MAX_TIME && !dead)
         {
-            Destroy(self);
+            StartCoroutine(explode());
         }
     }
 
-    // Update is called once per frame
-    //void FixedUpdate()
-    //{
-    //    self.transform.position += self.transform.up * Time.deltaTime * moveSpeed;
-    //}
+    public IEnumerator explode()
+    {
+        dead = true;
+        collision.enabled = false;
+        Destroy(rdby);
+        displayedSprite.sprite = explodeA;
+        light.intensity = 1.0f;
+        yield return new WaitForSeconds(explodeSpeed);
+        displayedSprite.sprite = explodeB;
+        light.intensity = 0.4f;
+        yield return new WaitForSeconds(explodeSpeed);
+        displayedSprite.sprite = explodeC;
+        light.intensity = 0.2f;
+        yield return new WaitForSeconds(explodeSpeed);
+        displayedSprite.sprite = explodeD;
+        light.intensity = 0.1f;
+        yield return new WaitForSeconds(explodeSpeed);
+        Destroy(self);
+    }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -58,7 +83,7 @@ public class bulletMotion : MonoBehaviour
             }
             if (collisionCount >= MAX_COLLISIONS)
             {
-                Destroy(self);
+                StartCoroutine(explode());
             }
         }
     }

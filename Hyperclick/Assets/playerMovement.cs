@@ -36,7 +36,8 @@ public class playerMovement : MonoBehaviour
         if (other.CompareTag("Bullet"))
         {
             damage.Invoke();
-            Destroy(other.gameObject.transform.parent.gameObject);
+            bulletMotion bulletScript = other.gameObject.transform.parent.GetComponent<bulletMotion>();
+            bulletScript.StartCoroutine(bulletScript.explode());
         }
     }
 }
