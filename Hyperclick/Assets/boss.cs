@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using Cinemachine;
 
 public class boss : MonoBehaviour
 {
+    public UnityEvent attackComplete;
+
+    public CinemachineImpulseSource fireScreenShake;
 
     enum Direction
     {
@@ -16,7 +21,6 @@ public class boss : MonoBehaviour
         W = 6,
         NW = 7
     }
-
 
     public GameObject self;
     public GameObject lFirePoint;
@@ -38,7 +42,6 @@ public class boss : MonoBehaviour
     public Sprite wSprite;
     public Sprite nwSprite;
 
-    public float MAX_BULLET_DELAY = 1f;
     public float MAX_TARGET_DELAY = 1f;
 
     public float TARGET_LEFT = -6f;
@@ -48,55 +51,126 @@ public class boss : MonoBehaviour
 
     public float MIN_CENTER_DIS = 0.5f;
 
-    private float targetAngle = 1f;
-
     private Direction curDir = Direction.S;
 
-    private float bulletDelay = 0f;
-    private float targetDelay = 0f;
-
-    // Update is called once per frame
-    void Update()
+    public IEnumerator targetPhase(int targets, float spawnCooldown = 0.5f, int targetGroupingMin = 1, int targetGroupingMax = 1)
     {
-        targetAngle = getPlayerAngle();
-        int attempt = 0;
-        while (!isFacing(targetAngle) && attempt < 10)
+        for (int target = 0; target < targets; target++)
         {
-            attempt++;
-            int newDir = (int)curDir + 1;
-            if (newDir > (int)Direction.NW)
+            yield return new WaitForSeconds(spawnCooldown);
+            int targetItemCount = Random.Range(targetGroupingMin, targetGroupingMax + 1);
+            for (int targetItem = 0; targetItem < targetItemCount; targetItem++)
             {
-                newDir = 0;
+                spawnTarget();
             }
-            curDir = (Direction)newDir;
-            updateRotation();
         }
+        attackComplete.Invoke();
+    }
 
-        bulletDelay += Time.deltaTime;
-        if (bulletDelay > MAX_BULLET_DELAY)
+    public IEnumerator spinAttack(int bullets, float bulletDelay, float rotationDelay)
+    {
+        curDir = Direction.N;
+        updateRotation();
+        do
         {
-            bulletDelay = 0f;
-            // Shoots in direction currently facing
-            //Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
-            //Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
+            for (int bullet = 0; bullet < bullets; bullet++)
+            {
+                yield return new WaitForSeconds(bulletDelay);
+                spawnBulletsAtFacing();
+            }
+            incrementDirection();
+            yield return new WaitForSeconds(rotationDelay);
+        } while (curDir != Direction.N);
+        attackComplete.Invoke();
+    }
 
-            // Shoots in player direction
+    public IEnumerator targetedAttack(int bullets, float bulletDelay, bool alternate = false, int repeatAmt = 1, float repeatDelay = 0f)
+    {
+        bool shootLeft = false;
+        for (int repeat = 0; repeat < repeatAmt; repeat++) {
+            for (int bullet = 0; bullet < bullets; bullet++)
+            {
+                float targetAngle = getPlayerAngle();
+                int attempt = 0;
+                bool rotClockwise = false;
+                if (!isFacing(targetAngle))
+                {
+                    float angleDisplacement = 0f;
+                    do
+                    {
+                        angleDisplacement -= 20f;
+                        rotClockwise = isFacing(targetAngle + angleDisplacement);
+                    } while (angleDisplacement > -180f && !rotClockwise);
+                }
+                while (!isFacing(targetAngle) && attempt < 8)
+                {
+                    attempt++;
+                    int newDir = (int)curDir;
+                    if (rotClockwise)
+                    {
+                        newDir--;
+                        if (newDir < 0) { newDir = (int)Direction.NW; }
+                    }
+                    else
+                    {
+                        newDir++;
+                        if (newDir > (int) Direction.NW) { newDir = 0; }
+                    }
+                    curDir = (Direction)newDir;
+                    updateRotation();
+                    yield return new WaitForSeconds(0.1f);
+                }
+                if (alternate) {
+                    shootLeft = !shootLeft;
+                    spawnBulletsAtPlayer(shootLeft, !shootLeft);
+                } else { spawnBulletsAtPlayer(); }
+                yield return new WaitForSeconds(bulletDelay);
+            }
+            yield return new WaitForSeconds(repeatDelay);
+        }
+        attackComplete.Invoke();
+    }
+
+    void incrementDirection()
+    {
+        int newDir = (int)curDir + 1;
+        if (newDir > (int)Direction.NW)
+        {
+            newDir = 0;
+        }
+        curDir = (Direction)newDir;
+        updateRotation();
+    }
+
+    void spawnTarget()
+    {
+        Vector3 targetPos = new Vector3(0f, 0f, 0f);
+        while (Mathf.Abs(targetPos.x) + Mathf.Abs(targetPos.y) < MIN_CENTER_DIS)
+        {
+            targetPos = new Vector3(Random.Range(TARGET_LEFT, TARGET_RIGHT), Random.Range(TARGET_TOP, TARGET_BOTTOM), 0f);
+        }
+        GameObject newTarget = Instantiate(target, targetPos, Quaternion.Euler(Vector3.forward));
+    }
+
+    void spawnBulletsAtFacing(bool lBullet = true, bool rBullet = true)
+    {
+        fireScreenShake.GenerateImpulseWithForce(1f);
+        if (lBullet) { Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f)); }
+        if (rBullet) { Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f)); }
+    }
+
+    void spawnBulletsAtPlayer(bool lBullet = true, bool rBullet = true)
+    {
+        fireScreenShake.GenerateImpulseWithForce(1f);
+        if (lBullet)
+        {
             GameObject leftBullet = Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
             leftBullet.transform.up = player.transform.position - leftBullet.transform.position;
+        }
+        if (rBullet)
+        {
             GameObject rightBullet = Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
             rightBullet.transform.up = player.transform.position - rightBullet.transform.position;
-        }
-
-        targetDelay += Time.deltaTime;
-        if (targetDelay > MAX_TARGET_DELAY)
-        {
-            targetDelay = 0f;
-            Vector3 targetPos = new Vector3(0f, 0f, 0f);
-            while (Mathf.Abs(targetPos.x) + Mathf.Abs(targetPos.y) < MIN_CENTER_DIS)
-            {
-                targetPos = new Vector3(Random.Range(TARGET_LEFT, TARGET_RIGHT), Random.Range(TARGET_TOP, TARGET_BOTTOM), 0f);
-            }
-            GameObject newTarget = Instantiate(target, targetPos, Quaternion.Euler(Vector3.forward));
         }
     }
 
