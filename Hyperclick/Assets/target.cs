@@ -5,6 +5,20 @@ using UnityEngine;
 public class target : MonoBehaviour
 {
     public Animator targetAnims;
+
+    public SpriteRenderer displayedSprite;
+    public Sprite explosionA;
+    public Sprite explosionB;
+    public Sprite explosionC;
+    public Sprite explosionD;
+    public UnityEngine.Rendering.Universal.Light2D light;
+
+    public GameObject ring;
+
+    public float explodeSpeed = 0.05f;
+    
+    private bool dead = false;
+
     void Start()
     {
         targetAnims.Play("target");
@@ -12,8 +26,32 @@ public class target : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (dead)
+        {
+            return;
+        }
+        dead = true;
+        Destroy(ring);
+        targetAnims.enabled = false;
         GameObject actionBar = GameObject.FindGameObjectWithTag("ActionBar");
         actionBar.GetComponent<actionBar>().increaseHealth();
+        StartCoroutine(explode());
+    }
+
+    IEnumerator explode()
+    {
+        displayedSprite.sprite = explosionA;
+        light.intensity = 1.0f;
+        yield return new WaitForSeconds(explodeSpeed);
+        displayedSprite.sprite = explosionB;
+        light.intensity = 0.4f;
+        yield return new WaitForSeconds(explodeSpeed);
+        displayedSprite.sprite = explosionC;
+        light.intensity = 0.2f;
+        yield return new WaitForSeconds(explodeSpeed);
+        displayedSprite.sprite = explosionD;
+        light.intensity = 0.1f;
+        yield return new WaitForSeconds(explodeSpeed);
         Destroy(gameObject);
     }
 
