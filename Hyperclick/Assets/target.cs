@@ -24,6 +24,14 @@ public class target : MonoBehaviour
         targetAnims.Play("target");
     }
 
+    void Update()
+    {
+        if (actionBar.dead && !dead)
+        {
+            OnMouseDown();
+        }
+    }
+
     void OnMouseDown()
     {
         if (dead)

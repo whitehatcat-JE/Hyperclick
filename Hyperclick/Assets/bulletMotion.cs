@@ -40,6 +40,11 @@ public class bulletMotion : MonoBehaviour
 
     void Update()
     {
+        if (actionBar.dead && !dead)
+        {
+            StartCoroutine(explode());
+            return;
+        }
         expireTime += Time.deltaTime;
         if (expireTime > MAX_TIME && !dead)
         {
@@ -69,6 +74,7 @@ public class bulletMotion : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (actionBar.dead) { return; }
         if (collision.gameObject.tag == "Wall")
         {
             collisionCount++;

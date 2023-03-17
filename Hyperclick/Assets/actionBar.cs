@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using Cinemachine;
+using TMPro;
+using UnityEngine.UI;
 
 public class actionBar : MonoBehaviour
 {
@@ -22,7 +24,7 @@ public class actionBar : MonoBehaviour
     public SpriteRenderer firstDigitSprite;
     public SpriteRenderer secondDigitSprite;
     public SpriteRenderer thirdDigitSprite;
-
+    public static bool dead = false;
     public Sprite numSprite0;
     public Sprite numSprite1;
     public Sprite numSprite2;
@@ -34,18 +36,23 @@ public class actionBar : MonoBehaviour
     public Sprite numSprite8;
     public Sprite numSprite9;
 
-    private boss bossScript;
+    public TextMeshProUGUI progressText;
+    public TextMeshProUGUI deathText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI levelText;
+    public GameObject continueButton;
 
-    private float maxHealthPos = -1.52f;
-    private float maxScale = 331f;
-    private float minHealthPos = -6.656f;
-    private float minScale = 0f;
+    public Image progressChart;
+    public Image darkenScreen;
+
+    private boss bossScript;
 
     private float trueMaxHealth = 9f;
     private int maxHealth = 9;
     private int STARTING_HEALTH = 2;
     private int health;
 
+    private int score = 0;
     private int level = 0;
 
     private ATTACK lastAttack = ATTACK.target;
@@ -68,6 +75,7 @@ public class actionBar : MonoBehaviour
 
     public void attackEnded()
     {
+        if (dead) { return; }
         if (lastAttack == ATTACK.target)
         {
             lastAttack = ATTACK.spin;
@@ -83,13 +91,21 @@ public class actionBar : MonoBehaviour
         }
     }
 
+    public void restartGame()
+    {
+        dead = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void increaseLevel()
     {
+        if (dead) { return; }
         level++;
         STARTING_HEALTH++;
         trueMaxHealth *= 1.1f;
         maxHealth = (int) trueMaxHealth;
         health = STARTING_HEALTH;
+        score += (level-1) * 100;
         updateHealth((float)health / (float)maxHealth);
         switch (level % 10)
         {
@@ -196,14 +212,29 @@ public class actionBar : MonoBehaviour
 
     public void decreaseHealth()
     {
+        if (dead) { return; }
+        score -= 5 * level;
+        if (score < 0) { score = 0; }
         health -= 1;
         damageScreenShake.GenerateImpulseWithForce(1f);
-        if (health <= 0) { SceneManager.LoadScene(SceneManager.GetActiveScene().name); }
         updateHealth((float)health / (float)maxHealth);
+        if (health <= 0)
+        {
+            darkenScreen.enabled = true;
+            deathText.enabled = true;
+            scoreText.enabled = true;
+            scoreText.text = "Score: " + score.ToString();
+            levelText.enabled = true;
+            levelText.text = "Level: " + level.ToString();
+            continueButton.SetActive(true);
+            dead = true;
+        }
     }
 
     public void increaseHealth()
     {
+        if (dead) { return; }
+        score += 5 * level;
         health += 1;
         healScreenShake.GenerateImpulseWithForce(1f);
         if (health >= maxHealth)
@@ -215,11 +246,8 @@ public class actionBar : MonoBehaviour
 
     void updateHealth(float percent)
     {
-        Transform barTransform = self.transform;
-        Vector3 newScale = new Vector3(minScale + (maxScale - minScale) * percent, 1f, 0f);
-        barTransform.localScale = newScale;
-        barTransform.position = new Vector3((minHealthPos + (maxHealthPos - minHealthPos) * percent), 4.5f, 0f);
-        self.transform.position = barTransform.position;
-        self.transform.localScale = barTransform.localScale;
+        if (dead) { return; }
+        progressText.text = ((int)(percent * 100f)).ToString();
+        progressChart.fillAmount = percent;
     }
 }

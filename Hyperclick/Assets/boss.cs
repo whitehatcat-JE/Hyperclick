@@ -58,6 +58,7 @@ public class boss : MonoBehaviour
         for (int target = 0; target < targets; target++)
         {
             yield return new WaitForSeconds(spawnCooldown);
+            if (actionBar.dead) { yield break; }
             int targetItemCount = Random.Range(targetGroupingMin, targetGroupingMax + 1);
             for (int targetItem = 0; targetItem < targetItemCount; targetItem++)
             {
@@ -69,6 +70,7 @@ public class boss : MonoBehaviour
 
     public IEnumerator spinAttack(int bullets, float bulletDelay, float rotationDelay)
     {
+        if (actionBar.dead) { yield break; }
         curDir = Direction.N;
         updateRotation();
         do
@@ -76,16 +78,19 @@ public class boss : MonoBehaviour
             for (int bullet = 0; bullet < bullets; bullet++)
             {
                 yield return new WaitForSeconds(bulletDelay);
+                if (actionBar.dead) { yield break; }
                 spawnBulletsAtFacing();
             }
             incrementDirection();
             yield return new WaitForSeconds(rotationDelay);
+            if (actionBar.dead) { yield break; }
         } while (curDir != Direction.N);
         attackComplete.Invoke();
     }
 
     public IEnumerator targetedAttack(int bullets, float bulletDelay, bool alternate = false, int repeatAmt = 1, float repeatDelay = 0f)
     {
+        if (actionBar.dead) { yield break; }
         bool shootLeft = false;
         for (int repeat = 0; repeat < repeatAmt; repeat++) {
             for (int bullet = 0; bullet < bullets; bullet++)
@@ -119,14 +124,17 @@ public class boss : MonoBehaviour
                     curDir = (Direction)newDir;
                     updateRotation();
                     yield return new WaitForSeconds(0.1f);
+                    if (actionBar.dead) { yield break; }
                 }
                 if (alternate) {
                     shootLeft = !shootLeft;
                     spawnBulletsAtPlayer(shootLeft, !shootLeft);
                 } else { spawnBulletsAtPlayer(); }
                 yield return new WaitForSeconds(bulletDelay);
+                if (actionBar.dead) { yield break; }
             }
             yield return new WaitForSeconds(repeatDelay);
+            if (actionBar.dead) { yield break; }
         }
         attackComplete.Invoke();
     }
