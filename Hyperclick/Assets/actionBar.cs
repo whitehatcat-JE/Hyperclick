@@ -15,8 +15,11 @@ public class actionBar : MonoBehaviour
         target = 2
     }
 
+    public static bool dead = false;
+
     public GameObject self;
     public GameObject boss;
+    public GameObject startingTarget;
 
     public CinemachineImpulseSource damageScreenShake;
     public CinemachineImpulseSource healScreenShake;
@@ -24,7 +27,6 @@ public class actionBar : MonoBehaviour
     public SpriteRenderer firstDigitSprite;
     public SpriteRenderer secondDigitSprite;
     public SpriteRenderer thirdDigitSprite;
-    public static bool dead = false;
     public Sprite numSprite0;
     public Sprite numSprite1;
     public Sprite numSprite2;
@@ -41,6 +43,11 @@ public class actionBar : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelText;
     public GameObject continueButton;
+
+    public TextMeshProUGUI titleText;
+    public GameObject startButton;
+    public GameObject quitButton;
+    public GameObject bossIntroSprite;
 
     public Image progressChart;
     public Image darkenScreen;
@@ -65,12 +72,16 @@ public class actionBar : MonoBehaviour
     void Awake()
     {
         bossScript = boss.GetComponent<boss>();
+        increaseLevel();
     }
 
     void Start()
     {
-        increaseLevel();
-        attackEnded();
+        dead = true;
+        darkenScreen.enabled = true;
+        titleText.enabled = true;
+        startButton.SetActive(true);
+        quitButton.SetActive(true);
     }
 
     public void attackEnded()
@@ -95,6 +106,28 @@ public class actionBar : MonoBehaviour
     {
         dead = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void startGame()
+    {
+        dead = false;
+        darkenScreen.enabled = false;
+        titleText.enabled = false;
+        startButton.SetActive(false);
+        quitButton.SetActive(false);
+        startingTarget.SetActive(true);
+    }
+
+    public void startTriggered()
+    {
+        boss.SetActive(true);
+        bossIntroSprite.SetActive(false);
+        attackEnded();
+    }
+
+    public void quitGame()
+    {
+        Application.Quit();
     }
 
     public void increaseLevel()
