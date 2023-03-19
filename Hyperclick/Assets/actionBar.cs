@@ -39,12 +39,12 @@ public class actionBar : MonoBehaviour
     public Sprite numSprite9;
 
     public TextMeshProUGUI progressText;
-    public TextMeshProUGUI deathText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelText;
     public GameObject continueButton;
 
-    public TextMeshProUGUI titleText;
+    public SpriteRenderer logo;
+    public SpriteRenderer gameOver;
     public GameObject startButton;
     public GameObject quitButton;
     public GameObject bossIntroSprite;
@@ -79,7 +79,7 @@ public class actionBar : MonoBehaviour
     {
         dead = true;
         darkenScreen.enabled = true;
-        titleText.enabled = true;
+        logo.enabled = true;
         startButton.SetActive(true);
         quitButton.SetActive(true);
     }
@@ -112,7 +112,7 @@ public class actionBar : MonoBehaviour
     {
         dead = false;
         darkenScreen.enabled = false;
-        titleText.enabled = false;
+        logo.enabled = false;
         startButton.SetActive(false);
         quitButton.SetActive(false);
         startingTarget.SetActive(true);
@@ -254,7 +254,7 @@ public class actionBar : MonoBehaviour
         if (health <= 0)
         {
             darkenScreen.enabled = true;
-            deathText.enabled = true;
+            gameOver.enabled = true;
             scoreText.enabled = true;
             scoreText.text = "Score: " + score.ToString();
             levelText.enabled = true;
