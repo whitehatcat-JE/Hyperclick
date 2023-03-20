@@ -16,6 +16,7 @@ public class actionBar : MonoBehaviour
     }
 
     public static bool dead = false;
+    public static int highscore = 0;
 
     public GameObject self;
     public GameObject boss;
@@ -48,6 +49,20 @@ public class actionBar : MonoBehaviour
     public GameObject startButton;
     public GameObject quitButton;
     public GameObject bossIntroSprite;
+    public GameObject leaderboardButton;
+
+    public TextMeshProUGUI leaderboard1;
+    public TextMeshProUGUI leaderboard2;
+    public TextMeshProUGUI leaderboard3;
+    public TextMeshProUGUI leaderboard4;
+    public TextMeshProUGUI leaderboard5;
+    public TextMeshProUGUI leaderboard6;
+    public TextMeshProUGUI leaderboard7;
+    public TextMeshProUGUI leaderboard8;
+    public TextMeshProUGUI leaderboard9;
+    public TextMeshProUGUI leaderboard10;
+    public GameObject backButton;
+    public SpriteRenderer leaderboard;
 
     public Image progressChart;
     public Image darkenScreen;
@@ -61,6 +76,17 @@ public class actionBar : MonoBehaviour
 
     private int score = 0;
     private int level = 0;
+
+    private int schrodingerLvl = 0;
+    private int personALvl = 19;
+    private int personBLvl = 18;
+    private int personCLvl = 17;
+    private int personDLvl = 13;
+    private int personELvl = 11;
+    private int personFLvl = 9;
+    private int personGLvl = 7;
+    private int personHLvl = 6;
+    private int personILvl = 3;
 
     private ATTACK lastAttack = ATTACK.target;
 
@@ -82,6 +108,7 @@ public class actionBar : MonoBehaviour
         logo.enabled = true;
         startButton.SetActive(true);
         quitButton.SetActive(true);
+        leaderboardButton.SetActive(true);
     }
 
     public void attackEnded()
@@ -108,6 +135,63 @@ public class actionBar : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void displayLeaderboard()
+    {
+        schrodingerLvl = highscore;
+        // Forgive me
+        logo.enabled = false;
+        startButton.SetActive(false);
+        quitButton.SetActive(false);
+        leaderboardButton.SetActive(false);
+        leaderboard1.enabled = true;
+        leaderboard2.enabled = true;
+        leaderboard3.enabled = true;
+        leaderboard4.enabled = true;
+        leaderboard5.enabled = true;
+        leaderboard6.enabled = true;
+        leaderboard7.enabled = true;
+        leaderboard8.enabled = true;
+        leaderboard9.enabled = true;
+        leaderboard10.enabled = true;
+        leaderboard.enabled = true;
+        backButton.SetActive(true);
+
+        List<string> leaderboardNames = new List<string>();
+        leaderboardNames.Add("Isaac - Lvl." + personALvl.ToString());
+        leaderboardNames.Add("Merlin - Lvl." + personBLvl.ToString());
+        leaderboardNames.Add("Uriel - Lvl." + personCLvl.ToString());
+        leaderboardNames.Add("Leonardo - Lvl." + personDLvl.ToString());
+        leaderboardNames.Add("Alexander - Lvl." + personELvl.ToString());
+        leaderboardNames.Add("Tesla - Lvl." + personFLvl.ToString());
+        leaderboardNames.Add("Icarus - Lvl." + personGLvl.ToString());
+        leaderboardNames.Add("Oedipus - Lvl." + personHLvl.ToString());
+        leaderboardNames.Add("Nero - Lvl." + personILvl.ToString());
+
+        string schrodingerText = "Schrodinger - Lvl." + schrodingerLvl.ToString();
+
+        if (schrodingerLvl >= personALvl){leaderboardNames.Insert(0, schrodingerText);}
+        else if (schrodingerLvl >= personBLvl) { leaderboardNames.Insert(1, schrodingerText); }
+        else if (schrodingerLvl >= personCLvl) { leaderboardNames.Insert(2, schrodingerText); }
+        else if (schrodingerLvl >= personDLvl) { leaderboardNames.Insert(3, schrodingerText); }
+        else if (schrodingerLvl >= personELvl) { leaderboardNames.Insert(4, schrodingerText); }
+        else if (schrodingerLvl >= personFLvl) { leaderboardNames.Insert(5, schrodingerText); }
+        else if (schrodingerLvl >= personGLvl) { leaderboardNames.Insert(6, schrodingerText); }
+        else if (schrodingerLvl >= personHLvl) { leaderboardNames.Insert(7, schrodingerText); }
+        else if (schrodingerLvl >= personILvl) { leaderboardNames.Insert(8, schrodingerText); }
+        else { leaderboardNames.Add(schrodingerText); }
+
+        leaderboard1.text = "1. " + leaderboardNames[0];
+        leaderboard2.text = "2. " + leaderboardNames[1];
+        leaderboard3.text = "3. " + leaderboardNames[2];
+        leaderboard4.text = "4. " + leaderboardNames[3];
+        leaderboard5.text = "5. " + leaderboardNames[4];
+        leaderboard6.text = "6. " + leaderboardNames[5];
+        leaderboard7.text = "7. " + leaderboardNames[6];
+        leaderboard8.text = "8. " + leaderboardNames[7];
+        leaderboard9.text = "9. " + leaderboardNames[8];
+        leaderboard10.text = "10. " + leaderboardNames[9];
+    }
+
     public void startGame()
     {
         dead = false;
@@ -116,6 +200,7 @@ public class actionBar : MonoBehaviour
         startButton.SetActive(false);
         quitButton.SetActive(false);
         startingTarget.SetActive(true);
+        leaderboardButton.SetActive(false);
     }
 
     public void startTriggered()
@@ -253,10 +338,11 @@ public class actionBar : MonoBehaviour
         updateHealth((float)health / (float)maxHealth);
         if (health <= 0)
         {
+            if (highscore < level) { highscore = level; }
             darkenScreen.enabled = true;
             gameOver.enabled = true;
-            scoreText.enabled = true;
-            scoreText.text = "Score: " + score.ToString();
+            //scoreText.enabled = true;
+            //scoreText.text = "Score: " + score.ToString();
             levelText.enabled = true;
             levelText.text = "Level: " + level.ToString();
             continueButton.SetActive(true);
