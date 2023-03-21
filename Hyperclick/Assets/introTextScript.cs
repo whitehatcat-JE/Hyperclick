@@ -34,7 +34,7 @@ public class introTextScript : MonoBehaviour
                 tauntText.text = "It seems we are destined to fight.";
                 break;
             case 5:
-                tauntText.text = "Shall we?";
+                tauntText.text = "Prove yourself worthy!";
                 break;
             case 6:
                 tauntText.text = "How far will you get this time?";

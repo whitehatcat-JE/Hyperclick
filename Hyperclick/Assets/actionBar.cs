@@ -48,6 +48,7 @@ public class actionBar : MonoBehaviour
     public SpriteRenderer gameOver;
     public GameObject startButton;
     public GameObject quitButton;
+    public GameObject loreButton;
     public GameObject bossIntroSprite;
     public GameObject leaderboardButton;
 
@@ -64,6 +65,17 @@ public class actionBar : MonoBehaviour
     public GameObject backButton;
     public SpriteRenderer leaderboard;
 
+    public GameObject terminal;
+    public TextMeshProUGUI paragraph1;
+    public TextMeshProUGUI paragraph2;
+    public TextMeshProUGUI paragraph3;
+    public TextMeshProUGUI paragraph4;
+    public TextMeshProUGUI paragraph5;
+    public TextMeshProUGUI paragraph6;
+    public TextMeshProUGUI paragraph7;
+    public TextMeshProUGUI paragraph8;
+    public TextMeshProUGUI paragraph9;
+
     public Image progressChart;
     public Image darkenScreen;
 
@@ -78,17 +90,19 @@ public class actionBar : MonoBehaviour
     private int level = 0;
 
     private int schrodingerLvl = 0;
-    private int personALvl = 19;
-    private int personBLvl = 18;
-    private int personCLvl = 17;
-    private int personDLvl = 13;
-    private int personELvl = 11;
-    private int personFLvl = 9;
-    private int personGLvl = 7;
-    private int personHLvl = 6;
-    private int personILvl = 3;
+    private int personALvl = 9;
+    private int personBLvl = 8;
+    private int personCLvl = 7;
+    private int personDLvl = 6;
+    private int personELvl = 5;
+    private int personFLvl = 4;
+    private int personGLvl = 3;
+    private int personHLvl = 2;
+    private int personILvl = 1;
 
     private ATTACK lastAttack = ATTACK.target;
+
+    private bool displayingLore = false;
 
     public actionBar()
     {
@@ -109,6 +123,7 @@ public class actionBar : MonoBehaviour
         startButton.SetActive(true);
         quitButton.SetActive(true);
         leaderboardButton.SetActive(true);
+        if (highscore >= personILvl) { loreButton.SetActive(true); }
     }
 
     public void attackEnded()
@@ -135,6 +150,39 @@ public class actionBar : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void displayLore()
+    {
+        if (displayingLore)
+        {
+            dead = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        } else
+        {
+            displayingLore = true;
+            logo.enabled = false;
+            loreButton.SetActive(false);
+            startButton.SetActive(false);
+            quitButton.SetActive(false);
+            leaderboardButton.SetActive(false);
+            terminal.SetActive(true);
+
+            schrodingerLvl = highscore;
+            if (schrodingerLvl >= personALvl) { paragraph9.enabled = true; }
+            if (schrodingerLvl >= personBLvl) { paragraph8.enabled = true; }
+            if (schrodingerLvl >= personCLvl) { paragraph7.enabled = true; }
+            if (schrodingerLvl >= personDLvl)
+            {
+                paragraph6.enabled = true;
+                terminal.GetComponent<Image>().color = Color.red;
+            }
+            if (schrodingerLvl >= personELvl) { paragraph5.enabled = true; }
+            if (schrodingerLvl >= personFLvl) { paragraph4.enabled = true; }
+            if (schrodingerLvl >= personGLvl) { paragraph3.enabled = true; }
+            if (schrodingerLvl >= personHLvl) { paragraph2.enabled = true; }
+            if (schrodingerLvl >= personILvl) { paragraph1.enabled = true; }
+        }
+    }
+
     public void displayLeaderboard()
     {
         schrodingerLvl = highscore;
@@ -143,6 +191,7 @@ public class actionBar : MonoBehaviour
         startButton.SetActive(false);
         quitButton.SetActive(false);
         leaderboardButton.SetActive(false);
+        loreButton.SetActive(false);
         leaderboard1.enabled = true;
         leaderboard2.enabled = true;
         leaderboard3.enabled = true;
@@ -169,16 +218,36 @@ public class actionBar : MonoBehaviour
 
         string schrodingerText = "Schrodinger - Lvl." + schrodingerLvl.ToString();
 
-        if (schrodingerLvl >= personALvl){leaderboardNames.Insert(0, schrodingerText);}
-        else if (schrodingerLvl >= personBLvl) { leaderboardNames.Insert(1, schrodingerText); }
-        else if (schrodingerLvl >= personCLvl) { leaderboardNames.Insert(2, schrodingerText); }
-        else if (schrodingerLvl >= personDLvl) { leaderboardNames.Insert(3, schrodingerText); }
-        else if (schrodingerLvl >= personELvl) { leaderboardNames.Insert(4, schrodingerText); }
-        else if (schrodingerLvl >= personFLvl) { leaderboardNames.Insert(5, schrodingerText); }
-        else if (schrodingerLvl >= personGLvl) { leaderboardNames.Insert(6, schrodingerText); }
-        else if (schrodingerLvl >= personHLvl) { leaderboardNames.Insert(7, schrodingerText); }
-        else if (schrodingerLvl >= personILvl) { leaderboardNames.Insert(8, schrodingerText); }
-        else { leaderboardNames.Add(schrodingerText); }
+        if (schrodingerLvl >= personALvl){leaderboardNames.Insert(0, schrodingerText);
+            leaderboard1.color = new Color32(115, 239, 232, 255);
+        }
+        else if (schrodingerLvl >= personBLvl) { leaderboardNames.Insert(1, schrodingerText);
+            leaderboard2.color = new Color32(115, 239, 232, 255);
+        }
+        else if (schrodingerLvl >= personCLvl) { leaderboardNames.Insert(2, schrodingerText);
+            leaderboard3.color = new Color32(115, 239, 232, 255);
+        }
+        else if (schrodingerLvl >= personDLvl) { leaderboardNames.Insert(3, schrodingerText);
+            leaderboard4.color = new Color32(115, 239, 232, 255);
+        }
+        else if (schrodingerLvl >= personELvl) { leaderboardNames.Insert(4, schrodingerText);
+            leaderboard5.color = new Color32(115, 239, 232, 255);
+        }
+        else if (schrodingerLvl >= personFLvl) { leaderboardNames.Insert(5, schrodingerText);
+            leaderboard6.color = new Color32(115, 239, 232, 255);
+        }
+        else if (schrodingerLvl >= personGLvl) { leaderboardNames.Insert(6, schrodingerText);
+            leaderboard7.color = new Color32(115, 239, 232, 255);
+        }
+        else if (schrodingerLvl >= personHLvl) { leaderboardNames.Insert(7, schrodingerText);
+            leaderboard8.color = new Color32(115, 239, 232, 255);
+        }
+        else if (schrodingerLvl >= personILvl) { leaderboardNames.Insert(8, schrodingerText);
+            leaderboard9.color = new Color32(115, 239, 232, 255);
+        }
+        else { leaderboardNames.Add(schrodingerText);
+            leaderboard10.color = new Color32(115, 239, 232, 255);
+        }
 
         leaderboard1.text = "1. " + leaderboardNames[0];
         leaderboard2.text = "2. " + leaderboardNames[1];
@@ -201,6 +270,7 @@ public class actionBar : MonoBehaviour
         quitButton.SetActive(false);
         startingTarget.SetActive(true);
         leaderboardButton.SetActive(false);
+        loreButton.SetActive(false);
     }
 
     public void startTriggered()
@@ -344,7 +414,7 @@ public class actionBar : MonoBehaviour
             //scoreText.enabled = true;
             //scoreText.text = "Score: " + score.ToString();
             levelText.enabled = true;
-            levelText.text = "Level: " + level.ToString();
+            levelText.text = "Lvl. " + level.ToString();
             continueButton.SetActive(true);
             dead = true;
         }
