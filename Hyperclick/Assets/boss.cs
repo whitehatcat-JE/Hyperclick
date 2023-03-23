@@ -27,8 +27,10 @@ public class boss : MonoBehaviour
     public GameObject rFirePoint;
 
     public GameObject bullet;
+    public GameObject traceBullet;
     public GameObject target;
 
+    public GameObject playerObj;
     public Rigidbody2D player;
 
     public SpriteRenderer displayedSprite;
@@ -160,25 +162,61 @@ public class boss : MonoBehaviour
         GameObject newTarget = Instantiate(target, targetPos, Quaternion.Euler(Vector3.forward));
     }
 
-    void spawnBulletsAtFacing(bool lBullet = true, bool rBullet = true)
-    {
-        fireScreenShake.GenerateImpulseWithForce(1f);
-        if (lBullet) { Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f)); }
-        if (rBullet) { Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f)); }
-    }
 
-    void spawnBulletsAtPlayer(bool lBullet = true, bool rBullet = true)
+    void spawnBulletsAtFacing(bool lBullet = true, bool rBullet = true, bool tracking = true)
     {
         fireScreenShake.GenerateImpulseWithForce(1f);
         if (lBullet)
         {
-            GameObject leftBullet = Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
-            leftBullet.transform.up = player.transform.position - leftBullet.transform.position;
+            if (tracking)
+            {
+                Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f)).GetComponent<trackScript>().player = playerObj;
+            } else
+            {
+                Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
+            }
         }
         if (rBullet)
         {
-            GameObject rightBullet = Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
-            rightBullet.transform.up = player.transform.position - rightBullet.transform.position;
+            if (tracking)
+            {
+                Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f)).GetComponent<trackScript>().player = playerObj;
+            }
+            else
+            {
+                Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
+            }
+        }
+    }
+
+    void spawnBulletsAtPlayer(bool lBullet = true, bool rBullet = true, bool tracking = false)
+    {
+        fireScreenShake.GenerateImpulseWithForce(1f);
+        if (lBullet)
+        {
+            if (tracking)
+            {
+                Vector2 directionToPlayer = player.transform.position - lFirePoint.transform.position;
+                float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+                Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<trackScript>().player = playerObj;
+            } else
+            {
+                GameObject leftBullet = Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
+                leftBullet.transform.up = player.transform.position - leftBullet.transform.position;
+            }
+        }
+        if (rBullet)
+        {
+            if (tracking)
+            {
+                Vector2 directionToPlayer = player.transform.position - rFirePoint.transform.position;
+                float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+                Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<trackScript>().player = playerObj;
+            } else
+            {
+                GameObject rightBullet = Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
+                rightBullet.transform.up = player.transform.position - rightBullet.transform.position;
+            }
         }
     }
 

@@ -22,20 +22,22 @@ public class bulletMotion : MonoBehaviour
 
     public float moveSpeed = 1f;
 
+    public int MAX_COLLISIONS = 3;
+
     float MAX_TIME = 25f;
 
     float expireTime = 0f;
     public float explodeSpeed = 0.05f;
 
     bool dead = false;
+    public bool applyForce = true;
 
     int collisionCount = 0;
-    int MAX_COLLISIONS = 3;
     // Start is called before the first frame update
     void Start()
     {
         self.tag = "Bullet";
-        rdby.AddForce(self.transform.up * moveSpeed);
+        if (applyForce) { rdby.AddForce(self.transform.up * moveSpeed); }
     }
 
     void Update()
