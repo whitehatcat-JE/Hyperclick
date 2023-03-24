@@ -163,7 +163,7 @@ public class boss : MonoBehaviour
     }
 
 
-    void spawnBulletsAtFacing(bool lBullet = true, bool rBullet = true, bool tracking = true)
+    void spawnBulletsAtFacing(bool lBullet = true, bool rBullet = true, bool tracking = false)
     {
         fireScreenShake.GenerateImpulseWithForce(1f);
         if (lBullet)

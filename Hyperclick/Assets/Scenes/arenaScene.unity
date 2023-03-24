@@ -4319,7 +4319,9 @@ MonoBehaviour:
   lFirePoint: {fileID: 1241984195}
   rFirePoint: {fileID: 329417824}
   bullet: {fileID: 6746921442689036885, guid: 67c1ef0f0adf2ae4195fb41fa86ff633, type: 3}
+  traceBullet: {fileID: 8664656983285566033, guid: 6b9062542cd4063408b3c6a8f2639f64, type: 3}
   target: {fileID: 8264726118265831659, guid: 1fac0ba0f58d60a48aab552fac0629b9, type: 3}
+  playerObj: {fileID: 882308755}
   player: {fileID: 882308757}
   displayedSprite: {fileID: 728638013}
   nSprite: {fileID: 21300000, guid: 4d8ff0594b0b2ae4c9977e9f8613e913, type: 3}
