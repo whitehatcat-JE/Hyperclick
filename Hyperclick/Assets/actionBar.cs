@@ -36,6 +36,7 @@ public class actionBar : MonoBehaviour
     public TextMeshProUGUI progressText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelText;
+    public AudioSource gameOverTune;
     public GameObject continueButton;
 
     public SpriteRenderer logo;
@@ -106,6 +107,7 @@ public class actionBar : MonoBehaviour
     void Awake()
     {
         bossScript = boss.GetComponent<boss>();
+        DontDestroyOnLoad(gameOverTune.gameObject);
         increaseLevel();
     }
 
@@ -482,6 +484,7 @@ public class actionBar : MonoBehaviour
             levelText.text = "Lvl. " + level.ToString();
             continueButton.SetActive(true);
             dead = true;
+            gameOverTune.Play();
         }
     }
 
