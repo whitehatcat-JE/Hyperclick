@@ -70,7 +70,7 @@ public class boss : MonoBehaviour
         attackComplete.Invoke();
     }
 
-    public IEnumerator spinAttack(int bullets, float bulletDelay, float rotationDelay)
+    public IEnumerator spinAttack(int bullets, float bulletDelay, float rotationDelay, bool trackingBullets = false, bool alternateTracking = false)
     {
         if (actionBar.dead) { yield break; }
         curDir = Direction.N;
@@ -81,7 +81,8 @@ public class boss : MonoBehaviour
             {
                 yield return new WaitForSeconds(bulletDelay);
                 if (actionBar.dead) { yield break; }
-                spawnBulletsAtFacing();
+                spawnBulletsAtFacing(true, true, trackingBullets);
+                if (alternateTracking) { trackingBullets = !trackingBullets; }
             }
             incrementDirection();
             yield return new WaitForSeconds(rotationDelay);
@@ -90,7 +91,7 @@ public class boss : MonoBehaviour
         attackComplete.Invoke();
     }
 
-    public IEnumerator targetedAttack(int bullets, float bulletDelay, bool alternate = false, int repeatAmt = 1, float repeatDelay = 0f)
+    public IEnumerator targetedAttack(int bullets, float bulletDelay, bool alternate = false, int repeatAmt = 1, float repeatDelay = 0f, bool trackingBullets = false, bool alternateTracking = false)
     {
         if (actionBar.dead) { yield break; }
         bool shootLeft = false;
@@ -130,8 +131,9 @@ public class boss : MonoBehaviour
                 }
                 if (alternate) {
                     shootLeft = !shootLeft;
-                    spawnBulletsAtPlayer(shootLeft, !shootLeft);
-                } else { spawnBulletsAtPlayer(); }
+                    spawnBulletsAtPlayer(shootLeft, !shootLeft, trackingBullets);
+                } else { spawnBulletsAtPlayer(true, true, trackingBullets); }
+                if (alternateTracking) { trackingBullets = !trackingBullets; }
                 yield return new WaitForSeconds(bulletDelay);
                 if (actionBar.dead) { yield break; }
             }

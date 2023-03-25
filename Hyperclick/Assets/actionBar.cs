@@ -8,12 +8,6 @@ using UnityEngine.UI;
 
 public class actionBar : MonoBehaviour
 {
-    enum ATTACK
-    {
-        spin = 0,
-        player = 1,
-        target = 2
-    }
 
     public static bool dead = false;
     public static int highscore = 0;
@@ -90,17 +84,17 @@ public class actionBar : MonoBehaviour
     private int level = 0;
 
     private int schrodingerLvl = 0;
-    private int personALvl = 9;
-    private int personBLvl = 8;
-    private int personCLvl = 7;
-    private int personDLvl = 6;
-    private int personELvl = 5;
-    private int personFLvl = 4;
-    private int personGLvl = 3;
-    private int personHLvl = 2;
-    private int personILvl = 1;
+    private int personALvl = 13;
+    private int personBLvl = 12;
+    private int personCLvl = 11;
+    private int personDLvl = 10;
+    private int personELvl = 8;
+    private int personFLvl = 7;
+    private int personGLvl = 6;
+    private int personHLvl = 5;
+    private int personILvl = 3;
 
-    private ATTACK lastAttack = ATTACK.target;
+    private int attackCount = 0;
 
     private bool displayingLore = false;
 
@@ -129,19 +123,90 @@ public class actionBar : MonoBehaviour
     public void attackEnded()
     {
         if (dead) { return; }
-        if (lastAttack == ATTACK.target)
+        if (level <= 4) // Yellow bullets only
         {
-            lastAttack = ATTACK.spin;
-            bossScript.StartCoroutine(bossScript.spinAttack((level < 10) ? (3+level) : Mathf.Clamp(13-level, 1, 4), Mathf.Clamp(0.2f/((float)level), 0.05f, 1f), 0.25f));
-        } else if (lastAttack == ATTACK.spin)
+            if (attackCount % 3 == 0)
+            {
+                bossScript.StartCoroutine(bossScript.spinAttack(level, 0.1f, level == 1 ? 0.2f : 0.1f));
+            } else if (attackCount % 3 == 1)
+            {
+                bossScript.StartCoroutine(bossScript.targetedAttack(1 + level, 0.1f, level < 3 ? false : true, level, level < 3 ? 1f : 1f - (0.25f * ((float) level - 2f))));
+            } else
+            {
+                bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.55f - (0.025f * (float) level)));
+            }
+        } else if (level <= 7) // Introduce pink bullets
         {
-            lastAttack = ATTACK.player;
-            bossScript.StartCoroutine(bossScript.targetedAttack(1 + level, 0.2f, (level < 5) ? false : true, 1+level, 0.5f / ((float)level)));
+            if (attackCount % 3 == 0)
+            {
+                bossScript.StartCoroutine(bossScript.spinAttack(3 * (level - 4), 0.15f - 0.025f * ((float) level - 4), 1f, true));
+            }
+            else if (attackCount % 3 == 1)
+            {
+                bossScript.StartCoroutine(bossScript.targetedAttack(3, 0.1f, level == 5 ? false : true, 3, level != 7 ? 1f : 0.5f));
+            } else
+            {
+                bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.55f - (0.02f * (float)level)));
+            }
+        } else if (level <= 9)
+        {
+            if (attackCount % 3 == 0)
+            {
+                bossScript.StartCoroutine(bossScript.spinAttack(level - 3, 0.1f, 0.1f));
+            }
+            else if (attackCount % 3 == 1)
+            {
+                bossScript.StartCoroutine(bossScript.targetedAttack(level - 7, 0.1f, level <= 8 ? false : true, level - 6, 1f - 0.2f * (float) level, true));
+            }
+            else
+            {
+                bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.55f - (0.02f * (float)level)));
+            }
+        } else if (level == 10)
+        {
+
+            if (attackCount % 3 == 0)
+            {
+                bossScript.StartCoroutine(bossScript.spinAttack(level - 3, 0.1f, 0.1f));
+            }
+            else if (attackCount % 3 == 1)
+            {
+                bossScript.StartCoroutine(bossScript.targetedAttack(level - 3, 0.1f, true, 3, 0.5f, false, true));
+            }
+            else
+            {
+                bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.55f - (0.02f * (float)level)));
+            }
+        } else if (level == 11)
+        {
+            if (attackCount % 3 == 0)
+            {
+                bossScript.StartCoroutine(bossScript.spinAttack(level - 3, 0.2f, 0.2f, false, true));
+            }
+            else if (attackCount % 3 == 1)
+            {
+                bossScript.StartCoroutine(bossScript.targetedAttack(3, 0.1f, true, 3, 0.5f));
+            }
+            else
+            {
+                bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.55f - (0.02f * (float)level)));
+            }
         } else
         {
-            lastAttack = ATTACK.target;
-            bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.5f / (1f - ((float) level) / 100f), 1, (int) Mathf.Clamp((float)level / 5f, 1f, 5f)));
+            if (attackCount % 3 == 0)
+            {
+                bossScript.StartCoroutine(bossScript.spinAttack(level - 3, 0.2f, 0.15f, false, true));
+            }
+            else if (attackCount % 3 == 1)
+            {
+                bossScript.StartCoroutine(bossScript.targetedAttack(level - 9, 0.1f, level % 2 == 0 ? false : true, level - 9, 0.3f, false, true));
+            }
+            else
+            {
+                bossScript.StartCoroutine(bossScript.targetPhase(6 + level, level == 12 ? 0.3f : 0.4f, 1, level == 12 ? 1 : 3));
+            }
         }
+        attackCount++;
     }
 
     public void restartGame()
@@ -289,10 +354,10 @@ public class actionBar : MonoBehaviour
     {
         if (dead) { return; }
         level++;
-        STARTING_HEALTH++;
         trueMaxHealth *= 1.1f;
         maxHealth = (int) trueMaxHealth;
-        health = STARTING_HEALTH;
+        health = maxHealth / 3;
+        attackCount = 0;
         score += (level-1) * 100;
         updateHealth((float)health / (float)maxHealth);
         switch (level % 10)
