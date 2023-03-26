@@ -37,6 +37,7 @@ public class actionBar : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelText;
     public AudioSource gameOverTune;
+    public AudioSource glitchTrack;
     public GameObject continueButton;
 
     public SpriteRenderer logo;
@@ -139,13 +140,9 @@ public class actionBar : MonoBehaviour
             }
         } else if (level <= 7) // Introduce pink bullets
         {
-            if (attackCount % 3 == 0)
+            if (attackCount % 2 == 0)
             {
                 bossScript.StartCoroutine(bossScript.spinAttack(3 * (level - 4), 0.15f - 0.025f * ((float) level - 4), 1f, true));
-            }
-            else if (attackCount % 3 == 1)
-            {
-                bossScript.StartCoroutine(bossScript.targetedAttack(3, 0.1f, level == 5 ? false : true, 3, level != 7 ? 1f : 0.5f));
             } else
             {
                 bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.55f - (0.02f * (float)level)));
@@ -225,6 +222,7 @@ public class actionBar : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         } else
         {
+            glitchTrack.Play();
             displayingLore = true;
             logo.enabled = false;
             loreButton.SetActive(false);
