@@ -557,7 +557,7 @@ GameObject:
   - component: {fileID: 8664656983285566037}
   - component: {fileID: 8664656983285566036}
   - component: {fileID: 8664656983285566042}
-  - component: {fileID: -2062033071379131459}
+  - component: {fileID: 558416434549736662}
   m_Layer: 3
   m_Name: tracerBullet
   m_TagString: Bullet
@@ -698,7 +698,7 @@ MonoBehaviour:
   MAX_COLLISIONS: 1
   explodeSpeed: 0.05
   applyForce: 0
---- !u!114 &-2062033071379131459
+--- !u!114 &558416434549736662
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

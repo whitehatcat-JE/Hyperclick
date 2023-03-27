@@ -42,7 +42,7 @@ public class bulletMotion : MonoBehaviour
 
     void Update()
     {
-        if (actionBar.dead && !dead)
+        if (gameManager.dead && !dead)
         {
             StartCoroutine(explode());
             return;
@@ -76,7 +76,7 @@ public class bulletMotion : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (actionBar.dead) { return; }
+        if (gameManager.dead) { return; }
         if (collision.gameObject.tag == "Wall")
         {
             collisionCount++;

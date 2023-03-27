@@ -27,7 +27,7 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (actionBar.dead) { return; }
+        if (gameManager.dead) { return; }
         float xMov = Input.GetAxisRaw("Horizontal");
         float yMov = Input.GetAxisRaw("Vertical");
 
@@ -71,13 +71,13 @@ public class playerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (actionBar.dead) { return; }
+        if (gameManager.dead) { return; }
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (actionBar.dead) { return; }
+        if (gameManager.dead) { return; }
         if (other.CompareTag("Bullet"))
         {
             damage.Invoke();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class introTextScript : MonoBehaviour
+public class introText : MonoBehaviour
 {
 
     public TextMeshProUGUI tauntText;

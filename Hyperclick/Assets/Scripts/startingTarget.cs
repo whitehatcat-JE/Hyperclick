@@ -35,6 +35,7 @@ public class startingTarget : MonoBehaviour
         }
         dead = true;
         tutorialText.enabled = false;
+        gameStartTriggered.Invoke();
         StartCoroutine(explode());
     }
 

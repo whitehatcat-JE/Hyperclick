@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class trackScript : MonoBehaviour
+public class bulletHoming : MonoBehaviour
 {
     public float speed = 10f; // speed of bullet
     public float turnSpeed = 5f; // turn speed of bullet
@@ -18,7 +18,7 @@ public class trackScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rb != null)
+        if (rb != null && player != null)
         {
             // calculate the direction towards the player
             Vector2 directionToPlayer = player.transform.position - transform.position;

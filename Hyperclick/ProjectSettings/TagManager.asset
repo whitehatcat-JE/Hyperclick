@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Bullet
   - Wall
-  - ActionBar
+  - ScoreManager
   layers:
   - Default
   - TransparentFX

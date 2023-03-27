@@ -438,7 +438,7 @@ GameObject:
   - component: {fileID: 84522430}
   - component: {fileID: 84522429}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: leaderboardScore3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 87225938}
   - component: {fileID: 87225937}
   m_Layer: 5
-  m_Name: Text (TMP) (8)
+  m_Name: leaderboardScore9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1116,7 +1116,7 @@ GameObject:
   - component: {fileID: 131992364}
   - component: {fileID: 131992363}
   m_Layer: 5
-  m_Name: Text (TMP) (9)
+  m_Name: leaderboardScore10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1803,7 +1803,7 @@ GameObject:
   - component: {fileID: 307217032}
   - component: {fileID: 307217031}
   m_Layer: 5
-  m_Name: Text (TMP) (4)
+  m_Name: leaderboardScore5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2106,7 +2106,7 @@ GameObject:
   - component: {fileID: 351446192}
   - component: {fileID: 351446191}
   m_Layer: 5
-  m_Name: Text (TMP) (7)
+  m_Name: leaderboardScore8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2514,7 +2514,7 @@ GameObject:
   - component: {fileID: 371662026}
   - component: {fileID: 371662025}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: leaderboardScore1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2648,7 +2648,7 @@ GameObject:
   - component: {fileID: 395832262}
   - component: {fileID: 395832261}
   m_Layer: 0
-  m_Name: thirdDigit
+  m_Name: hundredsLevelDigit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2940,7 +2940,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: displayLore
         m_Mode: 1
@@ -3075,7 +3075,7 @@ Transform:
   m_Children:
   - {fileID: 2109638297}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &471348720
 CircleCollider2D:
@@ -3108,7 +3108,7 @@ MonoBehaviour:
   gameStartTriggered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: startTriggered
         m_Mode: 1
@@ -3501,7 +3501,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: quitGame
         m_Mode: 1
@@ -3634,7 +3634,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: displayLore
         m_Mode: 1
@@ -3697,7 +3697,7 @@ GameObject:
   - component: {fileID: 593963837}
   - component: {fileID: 593963836}
   m_Layer: 0
-  m_Name: bWall
+  m_Name: bottomWallCollision
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3901,7 +3901,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: displayLeaderboard
         m_Mode: 1
@@ -4074,7 +4074,7 @@ GameObject:
   - component: {fileID: 681971314}
   - component: {fileID: 681971313}
   m_Layer: 5
-  m_Name: Text (TMP) (6)
+  m_Name: leaderboardScore7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4207,7 +4207,6 @@ GameObject:
   m_Component:
   - component: {fileID: 728638014}
   - component: {fileID: 728638013}
-  - component: {fileID: 728638017}
   - component: {fileID: 728638018}
   - component: {fileID: 728638019}
   m_Layer: 7
@@ -4287,57 +4286,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &728638017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 728638012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf58b315fe4d9164ea75c55555d92800, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947887963}
-        m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
-        m_MethodName: attackEnded
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  fireScreenShake: {fileID: 728638019}
-  self: {fileID: 728638012}
-  lFirePoint: {fileID: 1241984195}
-  rFirePoint: {fileID: 329417824}
-  bullet: {fileID: 6746921442689036885, guid: 67c1ef0f0adf2ae4195fb41fa86ff633, type: 3}
-  traceBullet: {fileID: 8664656983285566033, guid: 6b9062542cd4063408b3c6a8f2639f64, type: 3}
-  target: {fileID: 8264726118265831659, guid: 1fac0ba0f58d60a48aab552fac0629b9, type: 3}
-  playerObj: {fileID: 882308755}
-  player: {fileID: 882308757}
-  displayedSprite: {fileID: 728638013}
-  nSprite: {fileID: 21300000, guid: 4d8ff0594b0b2ae4c9977e9f8613e913, type: 3}
-  neSprite: {fileID: 21300000, guid: 0de3903535c65f04d991bbacb4866544, type: 3}
-  eSprite: {fileID: 21300000, guid: 90fd448f8a61af248997f80afe647851, type: 3}
-  seSprite: {fileID: 21300000, guid: 68e3802174c39a34d9c6e73e6a70417e, type: 3}
-  sSprite: {fileID: 21300000, guid: 02822ec3553b42241aacd898790df019, type: 3}
-  swSprite: {fileID: 21300000, guid: 61b08b09eea2244408020dffc98bcce7, type: 3}
-  wSprite: {fileID: 21300000, guid: 8c2e1a90d8a020241a3e1134258cb7ad, type: 3}
-  nwSprite: {fileID: 21300000, guid: d9d0ee5fa8091934bb93be1fca645327, type: 3}
-  MAX_TARGET_DELAY: 0.5
-  TARGET_LEFT: -6
-  TARGET_RIGHT: 6
-  TARGET_TOP: 3
-  TARGET_BOTTOM: -2
-  MIN_CENTER_DIS: 3
 --- !u!58 &728638018
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4773,7 +4721,7 @@ GameObject:
   - component: {fileID: 851690167}
   - component: {fileID: 851690166}
   m_Layer: 0
-  m_Name: tWall
+  m_Name: topWallCollision
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4893,74 +4841,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!1 &874381493
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 874381496}
-  - component: {fileID: 874381495}
-  - component: {fileID: 874381494}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &874381494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874381493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &874381495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874381493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &874381496
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874381493}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &875018711
 GameObject:
   m_ObjectHideFlags: 0
@@ -4974,7 +4854,7 @@ GameObject:
   - component: {fileID: 875018713}
   - component: {fileID: 875018712}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5123,7 +5003,7 @@ MonoBehaviour:
   damage:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: decreaseHealth
         m_Mode: 1
@@ -5518,7 +5398,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: restartGame
         m_Mode: 1
@@ -5882,31 +5762,7 @@ MonoBehaviour:
   introAnimFinished:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
-        m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
-        m_MethodName: startTriggered
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1963029048}
-        m_TargetAssemblyTypeName: introTextScript, Assembly-CSharp
-        m_MethodName: taunt
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  landScreenShake: {fileID: 1115026443}
+      - {m_Target: {fileID: 0}, m_TargetAssemblyTypeName: actionBar, Assembly-CSharp: }
 --- !u!111 &1115026442
 Animation:
   m_ObjectHideFlags: 0
@@ -6123,7 +5979,7 @@ GameObject:
   - component: {fileID: 1151477655}
   - component: {fileID: 1151477654}
   m_Layer: 5
-  m_Name: Text (TMP) (3)
+  m_Name: leaderboardScore4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6936,7 +6792,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: startGame
         m_Mode: 1
@@ -6997,7 +6853,7 @@ GameObject:
   - component: {fileID: 1500411907}
   - component: {fileID: 1500411906}
   m_Layer: 0
-  m_Name: firstDigit
+  m_Name: singleLevelDigit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7416,7 +7272,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1599521263
 GameObject:
@@ -7430,7 +7286,7 @@ GameObject:
   - component: {fileID: 1599521266}
   - component: {fileID: 1599521265}
   m_Layer: 5
-  m_Name: Text (TMP) (5)
+  m_Name: leaderboardScore6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7566,7 +7422,7 @@ GameObject:
   - component: {fileID: 1611730510}
   - component: {fileID: 1611730509}
   m_Layer: 0
-  m_Name: lWall
+  m_Name: leftWallCollision
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7697,7 +7553,7 @@ GameObject:
   - component: {fileID: 1673595398}
   - component: {fileID: 1673595397}
   m_Layer: 0
-  m_Name: secondDigit
+  m_Name: tensLevelDigit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8039,7 +7895,7 @@ GameObject:
   - component: {fileID: 1853874192}
   - component: {fileID: 1853874191}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: leaderboardScore2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8288,7 +8144,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1866241150
 GameObject:
@@ -8494,7 +8350,7 @@ GameObject:
   - component: {fileID: 1880375146}
   - component: {fileID: 1880375148}
   m_Layer: 0
-  m_Name: CM vcam1
+  m_Name: virtualCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8671,12 +8527,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1947887962}
   - component: {fileID: 1947887961}
-  - component: {fileID: 1947887963}
   - component: {fileID: 1947887964}
   - component: {fileID: 1947887965}
   m_Layer: 0
-  m_Name: actionBar
-  m_TagString: ActionBar
+  m_Name: scoreManager
+  m_TagString: ScoreManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8748,73 +8603,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1947887963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1947887960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b9ea07bc4c5fc458bf9f62a4d219d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  self: {fileID: 1947887960}
-  boss: {fileID: 728638012}
-  startingTarget: {fileID: 471348717}
-  damageScreenShake: {fileID: 1947887964}
-  healScreenShake: {fileID: 1947887965}
-  firstDigitSprite: {fileID: 1500411906}
-  secondDigitSprite: {fileID: 1673595397}
-  thirdDigitSprite: {fileID: 395832261}
-  numSprite0: {fileID: 21300000, guid: 3c25bda40ddfcab4cbffdd5cc45d729a, type: 3}
-  numSprite1: {fileID: 21300000, guid: 09548fe1e6b2ea64da2a0781bda5dbd4, type: 3}
-  numSprite2: {fileID: 21300000, guid: 48aee78dc8092df45a368e8dca736728, type: 3}
-  numSprite3: {fileID: 21300000, guid: a7ee4609fcf23614ab4f4efe4ecf9330, type: 3}
-  numSprite4: {fileID: 21300000, guid: 8fdffbbf1fa56644c8200df39ca6b2de, type: 3}
-  numSprite5: {fileID: 21300000, guid: e7ae0bf1d3f0f824db4091a0433fcd68, type: 3}
-  numSprite6: {fileID: 21300000, guid: cad970bf34a7ade41aa75667dd4c7f55, type: 3}
-  numSprite7: {fileID: 21300000, guid: 5e2efd5c9e4412a4fa7545738a9c6b08, type: 3}
-  numSprite8: {fileID: 21300000, guid: fd3c9ba9e7150a341a749dc7373ff3c1, type: 3}
-  numSprite9: {fileID: 21300000, guid: 38c67312ecd0d1740a06f552a50fc9ba, type: 3}
-  progressText: {fileID: 2051431552}
-  scoreText: {fileID: 1171188104}
-  levelText: {fileID: 492962421}
-  gameOverTune: {fileID: 1572446036}
-  glitchTrack: {fileID: 1854064182}
-  continueButton: {fileID: 1955478404}
-  logo: {fileID: 1565907742}
-  gameOver: {fileID: 1305437445}
-  startButton: {fileID: 1469935463}
-  quitButton: {fileID: 527415151}
-  loreButton: {fileID: 546431695}
-  bossIntroSprite: {fileID: 1115026434}
-  leaderboardButton: {fileID: 617637960}
-  leaderboard1: {fileID: 371662025}
-  leaderboard2: {fileID: 1853874191}
-  leaderboard3: {fileID: 84522429}
-  leaderboard4: {fileID: 1151477654}
-  leaderboard5: {fileID: 307217031}
-  leaderboard6: {fileID: 1599521265}
-  leaderboard7: {fileID: 681971313}
-  leaderboard8: {fileID: 351446191}
-  leaderboard9: {fileID: 87225937}
-  leaderboard10: {fileID: 131992363}
-  backButton: {fileID: 1072737002}
-  leaderboard: {fileID: 1724720213}
-  terminal: {fileID: 2071052007}
-  paragraph1: {fileID: 837101635}
-  paragraph2: {fileID: 351210304}
-  paragraph3: {fileID: 367350705}
-  paragraph4: {fileID: 359010281}
-  paragraph5: {fileID: 137513469}
-  paragraph6: {fileID: 1469478133}
-  paragraph7: {fileID: 275776999}
-  paragraph8: {fileID: 2117459049}
-  paragraph9: {fileID: 1144950126}
-  progressChart: {fileID: 1082894121}
-  darkenScreen: {fileID: 2079008108}
 --- !u!114 &1947887964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9005,7 +8793,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1947887963}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
         m_MethodName: restartGame
         m_Mode: 1
@@ -9205,6 +8993,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tauntText: {fileID: 1963029046}
   speed: 0.2
+  alphaVisiblity: 0
+  increasing: 1
+  active: 0
 --- !u!1 &2010301995
 GameObject:
   m_ObjectHideFlags: 0
@@ -9218,7 +9009,7 @@ GameObject:
   - component: {fileID: 2010301997}
   - component: {fileID: 2010301996}
   m_Layer: 0
-  m_Name: rWall
+  m_Name: rightWallCollision
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Cinemachine;
 
-public class bossEntry : MonoBehaviour
+public class bossEntryCutscene : MonoBehaviour
 {
     public UnityEvent introAnimFinished;
     public CinemachineImpulseSource landScreenShake;

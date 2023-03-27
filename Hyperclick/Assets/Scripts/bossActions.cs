@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Cinemachine;
 
-public class boss : MonoBehaviour
+public class bossActions : MonoBehaviour
 {
     public UnityEvent attackComplete;
 
@@ -60,7 +60,7 @@ public class boss : MonoBehaviour
         for (int target = 0; target < targets; target++)
         {
             yield return new WaitForSeconds(spawnCooldown);
-            if (actionBar.dead) { yield break; }
+            if (gameManager.dead) { yield break; }
             int targetItemCount = Random.Range(targetGroupingMin, targetGroupingMax + 1);
             for (int targetItem = 0; targetItem < targetItemCount; targetItem++)
             {
@@ -72,7 +72,7 @@ public class boss : MonoBehaviour
 
     public IEnumerator spinAttack(int bullets, float bulletDelay, float rotationDelay, bool trackingBullets = false, bool alternateTracking = false)
     {
-        if (actionBar.dead) { yield break; }
+        if (gameManager.dead) { yield break; }
         curDir = Direction.N;
         updateRotation();
         do
@@ -80,20 +80,20 @@ public class boss : MonoBehaviour
             for (int bullet = 0; bullet < bullets; bullet++)
             {
                 yield return new WaitForSeconds(bulletDelay);
-                if (actionBar.dead) { yield break; }
+                if (gameManager.dead) { yield break; }
                 spawnBulletsAtFacing(true, true, trackingBullets);
-                if (alternateTracking) { trackingBullets = !trackingBullets; }
             }
             incrementDirection();
+            if (alternateTracking) { trackingBullets = !trackingBullets; }
             yield return new WaitForSeconds(rotationDelay);
-            if (actionBar.dead) { yield break; }
+            if (gameManager.dead) { yield break; }
         } while (curDir != Direction.N);
         attackComplete.Invoke();
     }
 
     public IEnumerator targetedAttack(int bullets, float bulletDelay, bool alternate = false, int repeatAmt = 1, float repeatDelay = 0f, bool trackingBullets = false, bool alternateTracking = false)
     {
-        if (actionBar.dead) { yield break; }
+        if (gameManager.dead) { yield break; }
         bool shootLeft = false;
         for (int repeat = 0; repeat < repeatAmt; repeat++) {
             for (int bullet = 0; bullet < bullets; bullet++)
@@ -127,7 +127,7 @@ public class boss : MonoBehaviour
                     curDir = (Direction)newDir;
                     updateRotation();
                     yield return new WaitForSeconds(0.1f);
-                    if (actionBar.dead) { yield break; }
+                    if (gameManager.dead) { yield break; }
                 }
                 if (alternate) {
                     shootLeft = !shootLeft;
@@ -135,10 +135,10 @@ public class boss : MonoBehaviour
                 } else { spawnBulletsAtPlayer(true, true, trackingBullets); }
                 if (alternateTracking) { trackingBullets = !trackingBullets; }
                 yield return new WaitForSeconds(bulletDelay);
-                if (actionBar.dead) { yield break; }
+                if (gameManager.dead) { yield break; }
             }
             yield return new WaitForSeconds(repeatDelay);
-            if (actionBar.dead) { yield break; }
+            if (gameManager.dead) { yield break; }
         }
         attackComplete.Invoke();
     }
@@ -172,7 +172,7 @@ public class boss : MonoBehaviour
         {
             if (tracking)
             {
-                Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f)).GetComponent<trackScript>().player = playerObj;
+                Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f)).GetComponent<bulletHoming>().player = playerObj;
             } else
             {
                 Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
@@ -182,7 +182,7 @@ public class boss : MonoBehaviour
         {
             if (tracking)
             {
-                Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f)).GetComponent<trackScript>().player = playerObj;
+                Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f)).GetComponent<bulletHoming>().player = playerObj;
             }
             else
             {
@@ -200,7 +200,7 @@ public class boss : MonoBehaviour
             {
                 Vector2 directionToPlayer = player.transform.position - lFirePoint.transform.position;
                 float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
-                Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<trackScript>().player = playerObj;
+                Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<bulletHoming>().player = playerObj;
             } else
             {
                 GameObject leftBullet = Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
@@ -213,7 +213,7 @@ public class boss : MonoBehaviour
             {
                 Vector2 directionToPlayer = player.transform.position - rFirePoint.transform.position;
                 float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
-                Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<trackScript>().player = playerObj;
+                Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<bulletHoming>().player = playerObj;
             } else
             {
                 GameObject rightBullet = Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward));

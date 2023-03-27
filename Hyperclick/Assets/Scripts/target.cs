@@ -26,7 +26,7 @@ public class target : MonoBehaviour
 
     void Update()
     {
-        if (actionBar.dead && !dead)
+        if (gameManager.dead && !dead)
         {
             OnMouseDown();
         }
@@ -41,8 +41,8 @@ public class target : MonoBehaviour
         dead = true;
         Destroy(ring);
         targetAnims.enabled = false;
-        GameObject actionBar = GameObject.FindGameObjectWithTag("ActionBar");
-        actionBar.GetComponent<actionBar>().increaseHealth();
+        GameObject scoreManager = GameObject.FindGameObjectWithTag("ScoreManager");
+        scoreManager.GetComponent<gameManager>().increaseHealth();
         StartCoroutine(explode());
     }
 
@@ -65,8 +65,8 @@ public class target : MonoBehaviour
 
     public void decayed()
     {
-        GameObject actionBar = GameObject.FindGameObjectWithTag("ActionBar");
-        actionBar.GetComponent<actionBar>().decreaseHealth();
+        GameObject scoreManager = GameObject.FindGameObjectWithTag("ScoreManager");
+        scoreManager.GetComponent<gameManager>().decreaseHealth();
         Destroy(gameObject);
     }
 }
