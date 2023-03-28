@@ -157,9 +157,9 @@ public class gameManager : MonoBehaviour {
 
         string schrodingerText = "Schrodinger - Lvl." + schrodingerLvl.ToString();
 
-        if (schrodingerLvl > challengeLvls[0]) {
+        if (schrodingerLvl >= challengeLvls[0]) {
             for (int challenger = 0; challenger < challengeLvls.Length; challenger++) {
-                if (schrodingerLvl >= challengeLvls[challenger]) {
+                if (schrodingerLvl >= challengeLvls[8-challenger]) {
                     orderedNames.Insert(challenger, schrodingerText);
                     leaderboards[challenger].color = new Color32(115, 239, 232, 255);
                     break;
