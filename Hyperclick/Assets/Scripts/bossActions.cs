@@ -35,14 +35,7 @@ public class bossActions : MonoBehaviour
 
     public SpriteRenderer displayedSprite;
 
-    public Sprite nSprite;
-    public Sprite neSprite;
-    public Sprite eSprite;
-    public Sprite seSprite;
-    public Sprite sSprite;
-    public Sprite swSprite;
-    public Sprite wSprite;
-    public Sprite nwSprite;
+    public Sprite[] directionSprites = new Sprite[8];
 
     public float MAX_TARGET_DELAY = 1f;
 
@@ -70,9 +63,13 @@ public class bossActions : MonoBehaviour
         attackComplete.Invoke();
     }
 
-    public IEnumerator spinAttack(int bullets, float bulletDelay, float rotationDelay, bool trackingBullets = false, bool alternateTracking = false)
+    public IEnumerator spinAttack(int bullets, float bulletDelay, float rotationDelay, bool trackingBullets = false, bool alternateTracking = false, bool splitAlternate = false)
     {
-        if (gameManager.dead) { yield break; }
+        if (gameManager.dead || gameManager.justLeveled)
+        {
+            attackComplete.Invoke();
+            yield break;
+        }
         curDir = Direction.N;
         updateRotation();
         do
@@ -80,20 +77,32 @@ public class bossActions : MonoBehaviour
             for (int bullet = 0; bullet < bullets; bullet++)
             {
                 yield return new WaitForSeconds(bulletDelay);
-                if (gameManager.dead) { yield break; }
+                if (gameManager.dead || gameManager.justLeveled) {
+                    attackComplete.Invoke();
+                    yield break;
+                }
                 spawnBulletsAtFacing(true, true, trackingBullets);
+                if (alternateTracking && splitAlternate) { trackingBullets = !trackingBullets; }
             }
             incrementDirection();
-            if (alternateTracking) { trackingBullets = !trackingBullets; }
+            if (alternateTracking && !splitAlternate) { trackingBullets = !trackingBullets; }
             yield return new WaitForSeconds(rotationDelay);
-            if (gameManager.dead) { yield break; }
+            if (gameManager.dead || gameManager.justLeveled)
+            {
+                attackComplete.Invoke();
+                yield break;
+            }
         } while (curDir != Direction.N);
         attackComplete.Invoke();
     }
 
     public IEnumerator targetedAttack(int bullets, float bulletDelay, bool alternate = false, int repeatAmt = 1, float repeatDelay = 0f, bool trackingBullets = false, bool alternateTracking = false)
     {
-        if (gameManager.dead) { yield break; }
+        if (gameManager.dead || gameManager.justLeveled)
+        {
+            attackComplete.Invoke();
+            yield break;
+        }
         bool shootLeft = false;
         for (int repeat = 0; repeat < repeatAmt; repeat++) {
             for (int bullet = 0; bullet < bullets; bullet++)
@@ -127,7 +136,11 @@ public class bossActions : MonoBehaviour
                     curDir = (Direction)newDir;
                     updateRotation();
                     yield return new WaitForSeconds(0.1f);
-                    if (gameManager.dead) { yield break; }
+                    if (gameManager.dead || gameManager.justLeveled)
+                    {
+                        attackComplete.Invoke();
+                        yield break;
+                    }
                 }
                 if (alternate) {
                     shootLeft = !shootLeft;
@@ -135,10 +148,18 @@ public class bossActions : MonoBehaviour
                 } else { spawnBulletsAtPlayer(true, true, trackingBullets); }
                 if (alternateTracking) { trackingBullets = !trackingBullets; }
                 yield return new WaitForSeconds(bulletDelay);
-                if (gameManager.dead) { yield break; }
+                if (gameManager.dead || gameManager.justLeveled)
+                {
+                    attackComplete.Invoke();
+                    yield break;
+                }
             }
             yield return new WaitForSeconds(repeatDelay);
-            if (gameManager.dead) { yield break; }
+            if (gameManager.dead || gameManager.justLeveled)
+            {
+                attackComplete.Invoke();
+                yield break;
+            }
         }
         attackComplete.Invoke();
     }
@@ -224,45 +245,38 @@ public class bossActions : MonoBehaviour
 
     void updateRotation()
     {
+        displayedSprite.sprite = directionSprites[(int) curDir];
         switch (curDir)
         {
             case Direction.N:
-                displayedSprite.sprite = nSprite;
                 lFirePoint.transform.localPosition = new Vector3(0.956f, 0.061f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(-0.736f, 0.071f, 0f);
                 break;
             case Direction.NE:
-                displayedSprite.sprite = neSprite;
                 lFirePoint.transform.localPosition = new Vector3(0.959f, -0.482f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(-0.353f, 0.53f, 0f);
                 break;
             case Direction.E:
-                displayedSprite.sprite = eSprite;
                 lFirePoint.transform.localPosition = new Vector3(0.374f, -0.893f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(0.389f, 0.543f, 0f);
                 break;
             case Direction.SE:
-                displayedSprite.sprite = seSprite;
                 lFirePoint.transform.localPosition = new Vector3(-0.351f, -0.824f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(0.824f, 0.017f, 0f);
                 break;
             case Direction.S:
-                displayedSprite.sprite = sSprite;
                 lFirePoint.transform.localPosition = new Vector3(-0.845f, -0.445f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(0.845f, -0.445f, 0f);
                 break;
             case Direction.SW:
-                displayedSprite.sprite = swSprite;
                 lFirePoint.transform.localPosition = new Vector3(-0.752f, 0.1f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(0.42f, -0.775f, 0f);
                 break;
             case Direction.W:
-                displayedSprite.sprite = wSprite;
                 lFirePoint.transform.localPosition = new Vector3(-0.268f, 0.63f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(-0.268f, -0.81f, 0f);
                 break;
             case Direction.NW:
-                displayedSprite.sprite = nwSprite;
                 lFirePoint.transform.localPosition = new Vector3(0.546f, 0.599f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(-0.726f, -0.422f, 0f);
                 break;

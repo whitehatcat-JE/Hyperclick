@@ -8,11 +8,7 @@ public class playerMovement : MonoBehaviour
     public UnityEvent damage;
 
     public SpriteRenderer displayedSprite;
-    public Sprite playerFrameA;
-    public Sprite playerFrameB;
-    public Sprite playerFrameC;
-    public Sprite playerFrameD;
-    public Sprite playerFrameE;
+    public Sprite[] frames = new Sprite[5];
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
@@ -47,25 +43,7 @@ public class playerMovement : MonoBehaviour
             {
                 currentFrame %= 2;
             }
-            switch (currentFrame)
-            {
-                case 0:
-                    displayedSprite.sprite = playerFrameA;
-                    break;
-                case 1:
-                    displayedSprite.sprite = playerFrameB;
-                    break;
-                case 2:
-                    displayedSprite.sprite = playerFrameC;
-                    break;
-                case 3:
-                    displayedSprite.sprite = playerFrameD;
-                    break;
-                case 4:
-                    displayedSprite.sprite = playerFrameE;
-                    break;
-            }
-
+            displayedSprite.sprite = frames[currentFrame];
         }
     }
 

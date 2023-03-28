@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class gameManager : MonoBehaviour {
     public static bool dead = false;
+    public static bool justLeveled = false;
     public static int highscore = 0;
 
     public GameObject boss;
@@ -70,6 +71,7 @@ public class gameManager : MonoBehaviour {
 
     public void attackEnded() {
         if (dead) { return; }
+        justLeveled = false;
         if (level <= 4) {
             if (attackCount % 3 == 0) {
                 bossScript.StartCoroutine(bossScript.spinAttack(level, 0.1f, level == 1 ? 0.2f : 0.1f));
@@ -110,11 +112,11 @@ public class gameManager : MonoBehaviour {
             }
         } else {
             if (attackCount % 3 == 0) {
-                bossScript.StartCoroutine(bossScript.spinAttack(level - 3, 0.2f, 0.15f, false, true));
+                bossScript.StartCoroutine(bossScript.spinAttack(level - 3, 0.2f, 0.15f, false, true, level % 2 == 0));
             } else if (attackCount % 3 == 1) {
-                bossScript.StartCoroutine(bossScript.targetedAttack(level - 9, 0.1f, level % 2 == 0 ? false : true, level - 9, 0.3f, false, true));
+                bossScript.StartCoroutine(bossScript.targetedAttack(level - 9, 0.1f, !(level % 2 == 0), level - 9, 0.3f, false, true));
             } else {
-                bossScript.StartCoroutine(bossScript.targetPhase(6 + level, level == 12 ? 0.3f : 0.4f, 1, level == 12 ? 1 : 3));
+                bossScript.StartCoroutine(bossScript.targetPhase(6 + level, level == 12 ? 0.3f : 0.4f, 1, 1 + level / 10));
             }
         }
         attackCount++;
@@ -194,6 +196,7 @@ public class gameManager : MonoBehaviour {
 
     public void increaseLevel() {
         if (dead) { return; }
+        justLeveled = true;
         level++;
         trueMaxHealth *= 1.1f;
         maxHealth = (int) trueMaxHealth;
