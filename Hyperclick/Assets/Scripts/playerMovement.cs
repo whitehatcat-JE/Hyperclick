@@ -8,7 +8,7 @@ public class playerMovement : MonoBehaviour
     public UnityEvent damage;
 
     public SpriteRenderer displayedSprite;
-    public Sprite[] frames = new Sprite[5];
+    public Sprite[] frames = new Sprite[6];
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
@@ -23,7 +23,10 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.dead) { return; }
+        if (gameManager.dead) {
+            displayedSprite.sprite = frames[5];
+            return;
+        }
         float xMov = Input.GetAxisRaw("Horizontal");
         float yMov = Input.GetAxisRaw("Vertical");
 
