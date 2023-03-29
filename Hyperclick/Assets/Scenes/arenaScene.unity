@@ -5059,6 +5059,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 714f64791c35813468b1545082b76396, type: 3}
   - {fileID: 21300000, guid: 11fb199254990b94aa8f11031df5febf, type: 3}
   - {fileID: 21300000, guid: 0d61c31e9d3ca5d4c8e76d06d42d7cf6, type: 3}
+  - {fileID: 21300000, guid: 8797e77111db30545bd94688f901378e, type: 3}
   moveSpeed: 5
   rb: {fileID: 882308757}
   frameTime: 0.1
@@ -8637,6 +8638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 728638012}
+  bossIntroSprite: {fileID: 1115026434}
   startingTarget: {fileID: 471348717}
   damageScreenShake: {fileID: 1947887964}
   healScreenShake: {fileID: 1947887965}
@@ -8655,15 +8657,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5e2efd5c9e4412a4fa7545738a9c6b08, type: 3}
   - {fileID: 21300000, guid: fd3c9ba9e7150a341a749dc7373ff3c1, type: 3}
   - {fileID: 21300000, guid: 38c67312ecd0d1740a06f552a50fc9ba, type: 3}
-  progressText: {fileID: 2051431552}
-  levelText: {fileID: 492962421}
-  gameOverTune: {fileID: 1572446036}
-  glitchTrack: {fileID: 1854064182}
-  continueButton: {fileID: 1955478404}
+  darkenScreen: {fileID: 2079008108}
   startMenu: {fileID: 1565907741}
-  gameOver: {fileID: 1305437445}
   loreButton: {fileID: 546431695}
-  bossIntroSprite: {fileID: 1115026434}
+  levelText: {fileID: 492962421}
+  continueButton: {fileID: 1955478404}
+  gameOver: {fileID: 1305437445}
   leaderboards:
   - {fileID: 371662025}
   - {fileID: 1853874191}
@@ -8688,7 +8687,9 @@ MonoBehaviour:
   - {fileID: 2117459049}
   - {fileID: 1144950126}
   progressChart: {fileID: 1082894121}
-  darkenScreen: {fileID: 2079008108}
+  progressText: {fileID: 2051431552}
+  gameOverTune: {fileID: 1572446036}
+  glitchTrack: {fileID: 1854064182}
 --- !u!1 &1955478404
 GameObject:
   m_ObjectHideFlags: 0
