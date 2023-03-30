@@ -19,14 +19,13 @@ public class bulletHoming : MonoBehaviour {
     }
     // Execute once per physics update
     private void FixedUpdate() {
-        if (rb != null && player != null) { // Prevent bullet from targetting player before player has been assigned
-            // Calculate the direction towards the player
+        if (rb != null && player != null) { // Prevent bullet from targeting player before player has been assigned
+            // Calculate the movement direction
             Vector2 directionToPlayer = player.transform.position - transform.position;
-            // Calculate the direction the bullet should be facing
             Vector2 desiredDirection = Vector2.Lerp(transform.right, directionToPlayer.normalized, Time.fixedDeltaTime * turnSpeed);
-            // Set the right vector to be the desired direction
+            // Rotates bullet in calculated direction
             transform.right = desiredDirection;
-            // Set the velocity based on the new direction
+            // Adjusts velocity based on the new direction
             rb.velocity = transform.right * speed;
         }
     }

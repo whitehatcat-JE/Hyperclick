@@ -698,13 +698,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetAnims: {fileID: 8152149442675574989}
-  displayedSprite: {fileID: 8264726118265831658}
-  explosionA: {fileID: 21300000, guid: 193e180e7858bee49b7d6d945676e27d, type: 3}
-  explosionB: {fileID: 21300000, guid: 4dcf56e96c28648448a8ed71129bc93b, type: 3}
-  explosionC: {fileID: 21300000, guid: 2658e44f97514bb48b01aee181d93394, type: 3}
-  explosionD: {fileID: 21300000, guid: 38794e9b5504a6e4f9f63af26015d7a6, type: 3}
-  light: {fileID: 2890110684239449452}
+  ambientLight: {fileID: 2890110684239449452}
   ring: {fileID: 5900952937784878550}
+  displayedSprite: {fileID: 8264726118265831658}
+  explosionSprites:
+  - {fileID: 21300000, guid: 193e180e7858bee49b7d6d945676e27d, type: 3}
+  - {fileID: 21300000, guid: 4dcf56e96c28648448a8ed71129bc93b, type: 3}
+  - {fileID: 21300000, guid: 2658e44f97514bb48b01aee181d93394, type: 3}
+  - {fileID: 21300000, guid: 38794e9b5504a6e4f9f63af26015d7a6, type: 3}
   explodeSpeed: 0.05
 --- !u!95 &8152149442675574989
 Animator:

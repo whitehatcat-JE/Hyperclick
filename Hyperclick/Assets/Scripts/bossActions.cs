@@ -1,17 +1,14 @@
+// Controls boss attacks and rotations
+// Libraries
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Cinemachine;
 
-public class bossActions : MonoBehaviour
-{
-    public UnityEvent attackComplete;
-
-    public CinemachineImpulseSource fireScreenShake;
-
-    enum Direction
-    {
+public class bossActions : MonoBehaviour {
+    // Boss Direction Enumerator
+    enum Direction {
         N = 0,
         NE = 1,
         E = 2,
@@ -21,233 +18,163 @@ public class bossActions : MonoBehaviour
         W = 6,
         NW = 7
     }
-
-    public GameObject self;
+    // Events
+    public UnityEvent attackComplete;
+    // Game Objects
+    public CinemachineImpulseSource fireScreenShake;
+    //      Bullet
     public GameObject lFirePoint;
     public GameObject rFirePoint;
 
     public GameObject bullet;
     public GameObject traceBullet;
     public GameObject target;
-
+    //      Player
     public GameObject playerObj;
-    public Rigidbody2D player;
-
+    public Rigidbody2D playerRB;
+    // Sprites
     public SpriteRenderer displayedSprite;
-
     public Sprite[] directionSprites = new Sprite[8];
+    // Target Variables
+    private const float MAX_TARGET_DELAY = 1f;
 
-    public float MAX_TARGET_DELAY = 1f;
+    private const float TARGET_LEFT = -6f;
+    private const float TARGET_RIGHT = 6f;
+    private const float TARGET_TOP = 3f;
+    private const float TARGET_BOTTOM = -2f;
 
-    public float TARGET_LEFT = -6f;
-    public float TARGET_RIGHT = 6f;
-    public float TARGET_TOP = 3f;
-    public float TARGET_BOTTOM = -2f;
-
-    public float MIN_CENTER_DIS = 0.5f;
-
+    private const float MIN_CENTER_DIS = 4f;
+    // Direction Variables
     private Direction curDir = Direction.S;
-
-    public IEnumerator targetPhase(int targets, float spawnCooldown = 0.5f, int targetGroupingMin = 1, int targetGroupingMax = 1)
-    {
-        for (int target = 0; target < targets; target++)
-        {
+    // Spawn set amount of targets randomly around arena
+    public IEnumerator targetPhase(int targets, float spawnCooldown = 0.5f, int minAmt = 1, int maxAmt = 1) { // min & max refers to amount of targets that can spawn at once
+        for (int target = 0; target < targets; target++) { // Loop target spawning
             yield return new WaitForSeconds(spawnCooldown);
             if (gameManager.dead) { yield break; }
-            int targetItemCount = Random.Range(targetGroupingMin, targetGroupingMax + 1);
-            for (int targetItem = 0; targetItem < targetItemCount; targetItem++)
-            {
-                spawnTarget();
-            }
+            for (int cnt = 0; cnt < Random.Range(minAmt, maxAmt + 1); cnt++){ spawnTarget(); } // Spawn target
         }
         attackComplete.Invoke();
     }
-
-    public IEnumerator spinAttack(int bullets, float bulletDelay, float rotationDelay, bool trackingBullets = false, bool alternateTracking = false, bool splitAlternate = false)
-    {
-        if (gameManager.dead || gameManager.justLeveled)
-        {
-            attackComplete.Invoke();
-            yield break;
+    // Fire bullets in all directions
+    public IEnumerator spinAttack(int bullets, float bulletDelay, float rotDelay, bool trackBullets = false, bool altTrack = false, bool splitAlt = false) {
+        while (curDir != Direction.N) { // Rotate boss to north direction
+            curDir = (Direction) (((int)curDir + (curDir > Direction.S ? 1 : -1)) % 8);
+            updateRotation();
+            yield return new WaitForSeconds(0.1f);
         }
-        curDir = Direction.N;
-        updateRotation();
-        do
-        {
-            for (int bullet = 0; bullet < bullets; bullet++)
-            {
+        do { // Loop through all directions
+            for (int bullet = 0; bullet < bullets; bullet++) { // Fire set amount of bullets
+                if (gameManager.dead || gameManager.justLeveled) { break; }
+                spawnBulletsAtFacing(true, true, trackBullets);
+                if (splitAlt) { trackBullets = !trackBullets; } // Alternate bullet type
                 yield return new WaitForSeconds(bulletDelay);
-                if (gameManager.dead || gameManager.justLeveled) {
-                    attackComplete.Invoke();
-                    yield break;
-                }
-                spawnBulletsAtFacing(true, true, trackingBullets);
-                if (alternateTracking && splitAlternate) { trackingBullets = !trackingBullets; }
             }
-            incrementDirection();
-            if (alternateTracking && !splitAlternate) { trackingBullets = !trackingBullets; }
-            yield return new WaitForSeconds(rotationDelay);
-            if (gameManager.dead || gameManager.justLeveled)
-            {
-                attackComplete.Invoke();
-                yield break;
-            }
+            // Rotates boss
+            curDir = (Direction)(((int)curDir + 1) % 8);
+            updateRotation();
+
+            if (altTrack) { trackBullets = !trackBullets; } // Switch bullet type whenever direction changes
+            yield return new WaitForSeconds(rotDelay);
+            if (gameManager.dead || gameManager.justLeveled) { break; }
         } while (curDir != Direction.N);
         attackComplete.Invoke();
     }
-
-    public IEnumerator targetedAttack(int bullets, float bulletDelay, bool alternate = false, int repeatAmt = 1, float repeatDelay = 0f, bool trackingBullets = false, bool alternateTracking = false)
-    {
-        if (gameManager.dead || gameManager.justLeveled)
-        {
-            attackComplete.Invoke();
-            yield break;
-        }
-        bool shootLeft = false;
-        for (int repeat = 0; repeat < repeatAmt; repeat++) {
-            for (int bullet = 0; bullet < bullets; bullet++)
-            {
-                float targetAngle = getPlayerAngle();
-                int attempt = 0;
-                bool rotClockwise = false;
-                if (!isFacing(targetAngle))
-                {
-                    float angleDisplacement = 0f;
-                    do
-                    {
-                        angleDisplacement -= 20f;
-                        rotClockwise = isFacing(targetAngle + angleDisplacement);
-                    } while (angleDisplacement > -180f && !rotClockwise);
+    // Fire bullets towards player
+    public IEnumerator targetedAttack(int bullets, float bulletDelay, bool alt = false, int repeatAmt = 1, float repeatDelay = 0f, bool trackBullets = false, bool altTrack = false, bool altTrackBullets = false) {
+        for (int rptIdx = 0; rptIdx < repeatAmt; rptIdx++) { // Repeat targeting
+            for (int bulNum = 0; bulNum < bullets; bulNum++) { // Spawn multiple bullets in calculated direction
+                // Calculate whether clockwise or anti-clockwise rotation will be faster
+                float angle = getPlayerAngle();
+                bool rotDir = false;
+                for (float offset = 0f; offset > -180f && !rotDir && !isFacing(angle); offset -= 20f) {
+                    rotDir = isFacing(angle + offset);
                 }
-                while (!isFacing(targetAngle) && attempt < 8)
-                {
-                    attempt++;
-                    int newDir = (int)curDir;
-                    if (rotClockwise)
-                    {
-                        newDir--;
-                        if (newDir < 0) { newDir = (int)Direction.NW; }
-                    }
-                    else
-                    {
-                        newDir++;
-                        if (newDir > (int) Direction.NW) { newDir = 0; }
-                    }
-                    curDir = (Direction)newDir;
+                // Rotate boss in calculated direction till facing player
+                for (int attempt = 0; !isFacing(angle); attempt++) {
+                    curDir = (Direction) (((int) curDir + (rotDir ? -1 : 1) + 8) % 8);
                     updateRotation();
                     yield return new WaitForSeconds(0.1f);
-                    if (gameManager.dead || gameManager.justLeveled)
-                    {
-                        attackComplete.Invoke();
-                        yield break;
-                    }
+                    if (gameManager.dead || gameManager.justLeveled) { break; }
                 }
-                if (alternate) {
-                    shootLeft = !shootLeft;
-                    spawnBulletsAtPlayer(shootLeft, !shootLeft, trackingBullets);
-                } else { spawnBulletsAtPlayer(true, true, trackingBullets); }
-                if (alternateTracking) { trackingBullets = !trackingBullets; }
+                // Spawn bullets in direction
+                spawnBulletsAtPlayer(alt ? bulNum % 2 == 0 : true, alt ? bulNum % 2 == 1 : true, altTrackBullets ? bulNum % 2 == 0 : (altTrack ? rptIdx % 2 == 0 : false));
                 yield return new WaitForSeconds(bulletDelay);
-                if (gameManager.dead || gameManager.justLeveled)
-                {
-                    attackComplete.Invoke();
-                    yield break;
-                }
+                if (gameManager.dead || gameManager.justLeveled) { break; }
             }
-            yield return new WaitForSeconds(repeatDelay);
-            if (gameManager.dead || gameManager.justLeveled)
-            {
-                attackComplete.Invoke();
-                yield break;
-            }
+            yield return new WaitForSeconds(repeatDelay); // Add firing cooldown
+            if (gameManager.dead || gameManager.justLeveled) { break; }
         }
         attackComplete.Invoke();
     }
-
-    void incrementDirection()
-    {
-        int newDir = (int)curDir + 1;
-        if (newDir > (int)Direction.NW)
-        {
-            newDir = 0;
-        }
-        curDir = (Direction)newDir;
-        updateRotation();
-    }
-
-    void spawnTarget()
-    {
+    // Spawn target at random position in arena
+    void spawnTarget() {
+        // Select position to spawn target 
         Vector3 targetPos = new Vector3(0f, 0f, 0f);
-        while (Mathf.Abs(targetPos.x) + Mathf.Abs(targetPos.y) < MIN_CENTER_DIS)
-        {
+        while (Mathf.Abs(targetPos.x) + Mathf.Abs(targetPos.y) < MIN_CENTER_DIS) { // Ensures target doesn't spawn on top of boss sprite
             targetPos = new Vector3(Random.Range(TARGET_LEFT, TARGET_RIGHT), Random.Range(TARGET_TOP, TARGET_BOTTOM), 0f);
         }
+        // Spawn target
         GameObject newTarget = Instantiate(target, targetPos, Quaternion.Euler(Vector3.forward));
     }
-
-
-    void spawnBulletsAtFacing(bool lBullet = true, bool rBullet = true, bool tracking = false)
-    {
-        fireScreenShake.GenerateImpulseWithForce(1f);
-        if (lBullet)
-        {
-            if (tracking)
-            {
-                Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f)).GetComponent<bulletHoming>().player = playerObj;
-            } else
-            {
-                Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
+    // Spawn bullet/s in direction boss facing
+    void spawnBulletsAtFacing(bool lBullet = true, bool rBullet = true, bool tracking = false) {
+        fireScreenShake.GenerateImpulseWithForce(1f); // Screen recoil
+        if (lBullet) { // Spawn bullet from left side of boss
+            if (tracking) { // Spawn tracking bullet
+                Quaternion direction = Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f); // Velocity direction
+                GameObject newBullet = Instantiate(traceBullet, lFirePoint.transform.position, direction);
+                newBullet.GetComponent<bulletHoming>().player = playerObj; // Gives bullet player gameObject so bullet can aim towards player
+            } else { // Spawn generic bullet
+                Quaternion direction = Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f);
+                Instantiate(bullet, lFirePoint.transform.position, direction);
             }
-        }
-        if (rBullet)
-        {
-            if (tracking)
-            {
-                Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f)).GetComponent<bulletHoming>().player = playerObj;
-            }
-            else
-            {
-                Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f));
+        } if (rBullet) { // Spawn bullet from right side of boss
+            if (tracking) { // Spawn tracking bullet
+                Quaternion direction = Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f + Vector3.forward * 90f);
+                GameObject newBullet = Instantiate(traceBullet, rFirePoint.transform.position, direction);
+                newBullet.GetComponent<bulletHoming>().player = playerObj; // Gives bullet player gameObject so bullet can aim towards player
+            } else { // Spawn generic bullet
+                Quaternion direction = Quaternion.Euler(Vector3.forward * 45f * (float)curDir * -1f);
+                Instantiate(bullet, rFirePoint.transform.position, direction);
             }
         }
     }
-
-    void spawnBulletsAtPlayer(bool lBullet = true, bool rBullet = true, bool tracking = false)
-    {
+    // Spawn bullet/s in player direction
+    void spawnBulletsAtPlayer(bool lBullet = true, bool rBullet = true, bool tracking = false) {
         fireScreenShake.GenerateImpulseWithForce(1f);
-        if (lBullet)
-        {
-            if (tracking)
-            {
-                Vector2 directionToPlayer = player.transform.position - lFirePoint.transform.position;
+        if (lBullet) {
+            if (tracking) {
+                // Calculate angle to fire bullet in
+                Vector2 directionToPlayer = playerRB.transform.position - lFirePoint.transform.position;
                 float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
-                Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<bulletHoming>().player = playerObj;
-            } else
-            {
+                // Spawn tracking bullet
+                GameObject newBullet = Instantiate(traceBullet, lFirePoint.transform.position, Quaternion.Euler(0, 0, angle));
+                newBullet.GetComponent<bulletHoming>().player = playerObj;
+            } else {
+                // Spawn generic bullet
                 GameObject leftBullet = Instantiate(bullet, lFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
-                leftBullet.transform.up = player.transform.position - leftBullet.transform.position;
+                leftBullet.transform.up = playerRB.transform.position - leftBullet.transform.position;
             }
-        }
-        if (rBullet)
-        {
-            if (tracking)
-            {
-                Vector2 directionToPlayer = player.transform.position - rFirePoint.transform.position;
+        } if (rBullet) {
+            if (tracking) {
+                // Calculate angle to fire bullet in
+                Vector2 directionToPlayer = playerRB.transform.position - rFirePoint.transform.position;
                 float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
-                Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<bulletHoming>().player = playerObj;
-            } else
-            {
+                // Spawn tracking bullet
+                GameObject newBullet = Instantiate(traceBullet, rFirePoint.transform.position, Quaternion.Euler(0, 0, angle));
+                newBullet.GetComponent<bulletHoming>().player = playerObj;
+            } else {
+                // Spawn generic bullet
                 GameObject rightBullet = Instantiate(bullet, rFirePoint.transform.position, Quaternion.Euler(Vector3.forward));
-                rightBullet.transform.up = player.transform.position - rightBullet.transform.position;
+                rightBullet.transform.up = playerRB.transform.position - rightBullet.transform.position;
             }
         }
     }
-
-    void updateRotation()
-    {
-        displayedSprite.sprite = directionSprites[(int) curDir];
-        switch (curDir)
-        {
+    // Adjust boss sprite & bullet spawning locations based on current direction
+    void updateRotation() {
+        displayedSprite.sprite = directionSprites[(int) curDir]; // Update sprite
+        // Update bullet spawning locations
+        switch (curDir) {
             case Direction.N:
                 lFirePoint.transform.localPosition = new Vector3(0.956f, 0.061f, 0f);
                 rFirePoint.transform.localPosition = new Vector3(-0.736f, 0.071f, 0f);
@@ -282,23 +209,20 @@ public class bossActions : MonoBehaviour
                 break;
         }
     }
-
-    bool isFacing(float angle)
-    {
+    // Return true if boss facing player
+    bool isFacing(float angle) {
+        // Clamp given angle to 0-360 degrees
         angle *= -1;
         if (angle <= -22.5f) { angle += 360f; }
+        // Calculate & return whether boss facing player
         return angle > -22.5f + 45f * (float) curDir && angle < 22.5f + 45f * (float) curDir;
     }
-
-    float getPlayerAngle()
-    {
-        Vector2 selfPos;
-        selfPos.x = self.transform.position.x;
-        selfPos.y = self.transform.position.y;
-        Vector2 plrPos;
-        plrPos.x = player.position.x;
-        plrPos.y = player.position.y;
+    // Calculate boss angle to player
+    float getPlayerAngle() {
+        // Convert boss & player positions from Vector3 to Vector2
+        Vector2 selfPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        Vector2 plrPos = new Vector2(playerRB.position.x, playerRB.position.y);
+        // Calculate & return angle
         return Vector2.SignedAngle(selfPos, plrPos);
     }
-
 }

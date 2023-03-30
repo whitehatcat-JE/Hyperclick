@@ -3105,28 +3105,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b589da6ce58b4646823ddce550f74fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameStartTriggered:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: actionBar, Assembly-CSharp
-        m_MethodName: startTriggered
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   tutorialText: {fileID: 1269343205}
+  ambientLight: {fileID: 2109638296}
   displayedSprite: {fileID: 471348718}
-  explosionA: {fileID: 21300000, guid: 193e180e7858bee49b7d6d945676e27d, type: 3}
-  explosionB: {fileID: 21300000, guid: 4dcf56e96c28648448a8ed71129bc93b, type: 3}
-  explosionC: {fileID: 21300000, guid: 2658e44f97514bb48b01aee181d93394, type: 3}
-  explosionD: {fileID: 21300000, guid: 38794e9b5504a6e4f9f63af26015d7a6, type: 3}
-  light: {fileID: 2109638296}
+  explosionSprites:
+  - {fileID: 21300000, guid: 193e180e7858bee49b7d6d945676e27d, type: 3}
+  - {fileID: 21300000, guid: 4dcf56e96c28648448a8ed71129bc93b, type: 3}
+  - {fileID: 21300000, guid: 2658e44f97514bb48b01aee181d93394, type: 3}
+  - {fileID: 21300000, guid: 38794e9b5504a6e4f9f63af26015d7a6, type: 3}
   bossIntroSprite: {fileID: 1115026434}
   explodeSpeed: 0.05
 --- !u!1 &492962419
@@ -4384,14 +4370,13 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   fireScreenShake: {fileID: 728638019}
-  self: {fileID: 728638012}
   lFirePoint: {fileID: 1241984195}
   rFirePoint: {fileID: 329417824}
   bullet: {fileID: 6746921442689036885, guid: 67c1ef0f0adf2ae4195fb41fa86ff633, type: 3}
   traceBullet: {fileID: 8664656983285566033, guid: 6b9062542cd4063408b3c6a8f2639f64, type: 3}
   target: {fileID: 8264726118265831659, guid: 1fac0ba0f58d60a48aab552fac0629b9, type: 3}
   playerObj: {fileID: 882308755}
-  player: {fileID: 882308757}
+  playerRB: {fileID: 882308757}
   displayedSprite: {fileID: 728638013}
   directionSprites:
   - {fileID: 21300000, guid: 4d8ff0594b0b2ae4c9977e9f8613e913, type: 3}
@@ -4402,12 +4387,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 61b08b09eea2244408020dffc98bcce7, type: 3}
   - {fileID: 21300000, guid: 8c2e1a90d8a020241a3e1134258cb7ad, type: 3}
   - {fileID: 21300000, guid: d9d0ee5fa8091934bb93be1fca645327, type: 3}
-  MAX_TARGET_DELAY: 1
-  TARGET_LEFT: -6
-  TARGET_RIGHT: 6
-  TARGET_TOP: 3
-  TARGET_BOTTOM: -2
-  MIN_CENTER_DIS: 3.5
 --- !u!1 &813218333
 GameObject:
   m_ObjectHideFlags: 0
@@ -5060,8 +5039,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 11fb199254990b94aa8f11031df5febf, type: 3}
   - {fileID: 21300000, guid: 0d61c31e9d3ca5d4c8e76d06d42d7cf6, type: 3}
   - {fileID: 21300000, guid: 8797e77111db30545bd94688f901378e, type: 3}
-  moveSpeed: 5
   rb: {fileID: 882308757}
+  moveSpeed: 5
   frameTime: 0.1
   frameTimeSlow: 0.2
 --- !u!50 &882308757

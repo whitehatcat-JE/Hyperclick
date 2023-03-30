@@ -101,7 +101,7 @@ public class gameManager : MonoBehaviour {
             if (attackCount % 3 == 0) {
                 bossScript.StartCoroutine(bossScript.spinAttack(level - 3, 0.1f, 0.1f));
             } else if (attackCount % 3 == 1) {
-                bossScript.StartCoroutine(bossScript.targetedAttack(level - 7, 0.1f, level <= 8 ? false : true, level - 6, 1f - 0.2f * (float) level, true));
+                bossScript.StartCoroutine(bossScript.targetedAttack(level - 7, 0.1f, false, level - 6, 1f - 0.2f * (float) level, true, true));
             } else {
                 bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.55f - (0.02f * (float)level)));
             }
@@ -109,7 +109,7 @@ public class gameManager : MonoBehaviour {
             if (attackCount % 3 == 0) {
                 bossScript.StartCoroutine(bossScript.spinAttack(level - 3, 0.1f, 0.1f));
             } else if (attackCount % 3 == 1) {
-                bossScript.StartCoroutine(bossScript.targetedAttack(level - 3, 0.1f, true, 3, 0.5f, false, true));
+                bossScript.StartCoroutine(bossScript.targetedAttack(level - 3, 0.1f, true, 3, 0.5f, true, false, true));
             } else {
                 bossScript.StartCoroutine(bossScript.targetPhase(6 + level, 0.55f - (0.02f * (float)level)));
             }

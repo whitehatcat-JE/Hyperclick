@@ -661,19 +661,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af36efd3a151cf4bb55b4ea0cd3266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  self: {fileID: 6746921442689036885}
   rdby: {fileID: 7373621486167919081}
-  light: {fileID: 9018209033455736642}
-  spriteB: {fileID: 21300000, guid: a99ccf473a0d21443a81c02396e5d238, type: 3}
-  spriteC: {fileID: 21300000, guid: 2fb9f59a3b486a049ac3e61080eb26d2, type: 3}
-  explodeA: {fileID: 21300000, guid: 2643cf6d117b80947addca1641af1468, type: 3}
-  explodeB: {fileID: 21300000, guid: 42b958f96409cdc4980723edf238ec81, type: 3}
-  explodeC: {fileID: 21300000, guid: aca71669904748b459bf2649b80d01e2, type: 3}
-  explodeD: {fileID: 21300000, guid: fd8b2f178c3051f4b8bd7d750f0d2700, type: 3}
+  ambientLight: {fileID: 9018209033455736642}
   collision: {fileID: 6746921442689036883}
   displayedSprite: {fileID: 6746921442689036882}
+  spritePhases:
+  - {fileID: 21300000, guid: a99ccf473a0d21443a81c02396e5d238, type: 3}
+  - {fileID: 21300000, guid: 2fb9f59a3b486a049ac3e61080eb26d2, type: 3}
+  explosionSprites:
+  - {fileID: 21300000, guid: 2643cf6d117b80947addca1641af1468, type: 3}
+  - {fileID: 21300000, guid: 42b958f96409cdc4980723edf238ec81, type: 3}
+  - {fileID: 21300000, guid: aca71669904748b459bf2649b80d01e2, type: 3}
+  - {fileID: 21300000, guid: fd8b2f178c3051f4b8bd7d750f0d2700, type: 3}
   moveSpeed: 250
   explodeSpeed: 0.05
+  applyForce: 1
 --- !u!50 &7373621486167919081
 Rigidbody2D:
   serializedVersion: 4
