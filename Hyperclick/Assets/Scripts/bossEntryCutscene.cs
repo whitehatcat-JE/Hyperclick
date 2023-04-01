@@ -11,9 +11,12 @@ public class bossEntryCutscene : MonoBehaviour {
     public UnityEvent introAnimFinished;
     // Screen Shake Object
     public CinemachineImpulseSource landScreenShake;
+    // Audio
+    public audioManager audioScript;
     // Shakes screen when boss approaches ground
     public void approachingGround() {
         landScreenShake.GenerateImpulseWithForce(1f);
+        audioScript.thud();
     }
     // Replaces cutscene boss with actual boss
     public void animFinished() {

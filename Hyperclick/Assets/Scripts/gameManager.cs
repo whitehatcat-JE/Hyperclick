@@ -49,8 +49,7 @@ public class gameManager : MonoBehaviour {
     public TextMeshProUGUI progressText;
 
     // Audio
-    public AudioSource gameOverTune;
-    public AudioSource glitchTrack;
+    public audioManager audioScript;
 
     // Health Variables
     private float trueMaxHealth = 9f;
@@ -70,12 +69,12 @@ public class gameManager : MonoBehaviour {
     // Run on scene load
     void Awake() {
         bossScript = boss.GetComponent<bossActions>();
-        DontDestroyOnLoad(gameOverTune.gameObject); // Stop game over audio from being cut off
         increaseLevel(); // Set level to 1
         // Display start menu
         dead = true;
         darkenScreen.enabled = true;
         startMenu.SetActive(true);
+        audioScript.play(audioManager.TRACK.menu);
         if (highscore >= challengeLvls[0]) { loreButton.SetActive(true); }
     }
     // Run next boss attack action 
@@ -142,7 +141,7 @@ public class gameManager : MonoBehaviour {
         if (displayingLore) { // Hide menu (Reloads scene)
             restartGame();
         } else { // Show menu
-            glitchTrack.Play();
+            audioScript.play(audioManager.TRACK.glitch);
             displayingLore = true;
             startMenu.SetActive(false);
             terminal.SetActive(true);
@@ -198,6 +197,7 @@ public class gameManager : MonoBehaviour {
     public void startTriggered() {
         boss.SetActive(true);
         bossIntroSprite.SetActive(false);
+        audioScript.play(audioManager.TRACK.combat);
         attackEnded();
     }
     // Quit program
@@ -236,7 +236,7 @@ public class gameManager : MonoBehaviour {
             levelText.enabled = true;
             levelText.text = "Lvl. " + level.ToString();
             continueButton.SetActive(true);
-            gameOverTune.Play();
+            audioScript.play(audioManager.TRACK.gameOver);
         }
     }
     // Increase health

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class target : MonoBehaviour {
+    // Audio Tracks
+    public AudioSource popSFX;
     // Game Objects
     public Animator targetAnims;
     public UnityEngine.Rendering.Universal.Light2D ambientLight;
@@ -23,7 +25,12 @@ public class target : MonoBehaviour {
     // Called once per frame
     void Update() {
         // Destroy target if player dies
-        if (gameManager.dead && !dead) { OnMouseDown(); }
+        if (gameManager.dead && !dead) {
+            dead = true;
+            Destroy(ring);
+            targetAnims.enabled = false;
+            StartCoroutine(explode());
+        }
     }
     // Called when target clicked on
     void OnMouseDown() {
@@ -31,6 +38,7 @@ public class target : MonoBehaviour {
         // Destroy target
         dead = true;
         Destroy(ring);
+        popSFX.Play();
         targetAnims.enabled = false;
         StartCoroutine(explode());
         // Increase player health

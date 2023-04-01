@@ -17,6 +17,10 @@ public class startingTarget : MonoBehaviour {
     // Animation Variables
     public float explodeSpeed = 0.05f;
     private bool dead = false;
+
+    // Audio
+    public audioManager audioScript;
+
     // Called when object activated
     void Start() {
         tutorialText.enabled = true;
@@ -27,6 +31,7 @@ public class startingTarget : MonoBehaviour {
         dead = true;
         tutorialText.enabled = false;
         StartCoroutine(explode());
+        audioScript.pop();
     }
     // Explosion animation
     IEnumerator explode() {
