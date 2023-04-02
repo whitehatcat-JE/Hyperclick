@@ -31,6 +31,7 @@ public class startingTarget : MonoBehaviour {
         dead = true;
         tutorialText.enabled = false;
         StartCoroutine(explode());
+        audioScript.approachGround();
         audioScript.pop();
     }
     // Explosion animation

@@ -20,6 +20,8 @@ public class bossActions : MonoBehaviour {
     }
     // Events
     public UnityEvent attackComplete;
+    // Audio
+    public audioManager audioScript;
     // Game Objects
     public CinemachineImpulseSource fireScreenShake;
     //      Bullet
@@ -65,6 +67,8 @@ public class bossActions : MonoBehaviour {
         do { // Loop through all directions
             for (int bullet = 0; bullet < bullets; bullet++) { // Fire set amount of bullets
                 if (gameManager.dead || gameManager.justLeveled) { break; }
+                if (trackBullets) { audioScript.shootHoming(); }
+                else { audioScript.shoot(); }
                 spawnBulletsAtFacing(true, true, trackBullets);
                 if (splitAlt) { trackBullets = !trackBullets; } // Alternate bullet type
                 yield return new WaitForSeconds(bulletDelay);
@@ -97,6 +101,8 @@ public class bossActions : MonoBehaviour {
                     if (gameManager.dead || gameManager.justLeveled) { break; }
                 }
                 // Spawn bullets in direction
+                if (altTrackBullets ? bulNum % 2 == 0 : (altTrack ? rptIdx % 2 == 0 : false)) { audioScript.shootHoming(); }
+                else { audioScript.shoot(); }
                 spawnBulletsAtPlayer(alt ? bulNum % 2 == 0 : true, alt ? bulNum % 2 == 1 : true, altTrackBullets ? bulNum % 2 == 0 : (altTrack ? rptIdx % 2 == 0 : false));
                 yield return new WaitForSeconds(bulletDelay);
                 if (gameManager.dead || gameManager.justLeveled) { break; }

@@ -13,32 +13,56 @@ public class audioManager : MonoBehaviour
     }
 
     // Audio Tracks
+    public AudioSource menuLoopInstance;
+    public static AudioSource menuLoop;
+
+    public AudioSource menuIntroInstance;
+    public static AudioSource menuIntro;
+
+    public static bool introPlaying = false;
+
     public AudioSource gameOver;
     public AudioSource glitch;
     public AudioSource glitch2;
     public AudioSource combatIntro;
     public AudioSource combatLoop;
-    public AudioSource menuLoopInstance;
-    public static AudioSource menuLoop;
     public AudioSource menuClick;
     public AudioSource targetPop;
     public AudioSource landing;
+    public AudioSource approach;
+    public AudioSource levelUp;
+
+    public AudioSource[] shots = new AudioSource[5];
+    public AudioSource[] homingShots = new AudioSource[5];
+    public AudioSource[] damages = new AudioSource[5];
 
     private bool combatIntroPlaying = false;
     private bool gameOverPlaying = false;
+
+    private int prevShotNum = 0;
+    private int prevSHomNum = 0;
+    private int prevHurtNum = 0;
+
+    private const float HURT_COOLDOWN_TIME = 0.2f;
+
+    private float hurtSFXCooldown = 0f;
 
     void Awake() {
         DontDestroyOnLoad(menuClick.gameObject); // Stop game over audio from being cut off
         if (menuLoop == null) {
             menuLoop = menuLoopInstance;
-            menuLoop.Play();
+            menuIntro = menuIntroInstance;
+            menuIntro.Play();
+            introPlaying = true;
             DontDestroyOnLoad(menuLoop.gameObject); // Stop game over audio from being cut off
+            DontDestroyOnLoad(menuIntro.gameObject); // Stop game over audio from being cut off
         }
     }
 
     void Start() {
-        if (!menuLoop.isPlaying) {
-            menuLoop.Play();
+        if (!menuLoop.isPlaying && !menuIntro.isPlaying) {
+            menuIntro.Play();
+            introPlaying = true;
         }
     }
 
@@ -49,7 +73,15 @@ public class audioManager : MonoBehaviour
         } else if (gameOverPlaying && !gameOver.isPlaying)
         {
             gameOverPlaying = false;
+            menuIntro.Play();
+        } else if (introPlaying && !menuIntro.isPlaying)
+        {
+            introPlaying = false;
             menuLoop.Play();
+        }
+        if (hurtSFXCooldown > 0f)
+        {
+            hurtSFXCooldown -= Time.deltaTime;
         }
     }
 
@@ -60,19 +92,25 @@ public class audioManager : MonoBehaviour
                 gameOver.Play();
                 combatLoop.Stop();
                 combatIntro.Stop();
+                menuIntro.Stop();
                 combatIntroPlaying = false;
+                introPlaying = false;
                 gameOverPlaying = true;
                 break;
             case TRACK.glitch:
                 glitch.Play();
                 menuLoop.Stop();
+                menuIntro.Stop();
                 gameOverPlaying = false;
+                introPlaying = false;
                 break;
             case TRACK.combat:
                 combatIntro.Play();
                 menuLoop.Stop();
+                menuIntro.Stop();
                 combatIntroPlaying = true;
                 gameOverPlaying = false;
+                introPlaying = false;
                 break;
         }
     }
@@ -92,6 +130,46 @@ public class audioManager : MonoBehaviour
         landing.Play();
     }
 
+    public void approachGround()
+    {
+        approach.Play();
+    }
+
+    public void shoot()
+    {
+        int newShotNum = Random.Range(0, shots.Length);
+        while (newShotNum == prevShotNum)
+        {
+            newShotNum = Random.Range(0, shots.Length);
+        }
+        shots[newShotNum].Play();
+        prevShotNum = newShotNum;
+    }
+
+    public void shootHoming()
+    {
+        int newShotNum = Random.Range(0, shots.Length);
+        while (newShotNum == prevSHomNum)
+        {
+            newShotNum = Random.Range(0, shots.Length);
+        }
+        homingShots[newShotNum].Play();
+        prevSHomNum = newShotNum;
+    }
+
+    public void hurt()
+    {
+        if (hurtSFXCooldown > 0f) { return; }
+        hurtSFXCooldown = HURT_COOLDOWN_TIME;
+        int newHurtNum = Random.Range(0, damages.Length);
+        while (newHurtNum == prevHurtNum)
+        {
+            newHurtNum = Random.Range(0, damages.Length);
+        }
+        damages[newHurtNum].Play();
+        prevHurtNum = newHurtNum;
+    }
+
     public void glitchEnter()
     {
         glitch2.Play();
@@ -100,5 +178,10 @@ public class audioManager : MonoBehaviour
     public void glitchExit()
     {
         glitch2.Stop();
+    }
+
+    public void level()
+    {
+        levelUp.Play();
     }
 }

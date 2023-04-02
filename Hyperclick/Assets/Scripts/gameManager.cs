@@ -237,6 +237,9 @@ public class gameManager : MonoBehaviour {
             levelText.text = "Lvl. " + level.ToString();
             continueButton.SetActive(true);
             audioScript.play(audioManager.TRACK.gameOver);
+        } else
+        {
+            audioScript.hurt();
         }
     }
     // Increase health
@@ -244,7 +247,11 @@ public class gameManager : MonoBehaviour {
         if (dead) { return; }
         health += 1;
         healScreenShake.GenerateImpulseWithForce(1f);
-        if (health >= maxHealth) { increaseLevel(); } // Increase level if health reaches max
+        if (health >= maxHealth)
+        {
+            audioScript.level();
+            increaseLevel();
+        } // Increase level if health reaches max
         updateHealth((float)health / (float)maxHealth);
     }
     // Update displayed health
