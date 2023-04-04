@@ -79,9 +79,9 @@ public class audioManager : MonoBehaviour
         } else if (gameOverPlaying && !gameOver.isPlaying) { // Game over to menu transition
             gameOverPlaying = false;
             menuIntro.Play();
-        } else if (introPlaying && !menuIntro.isPlaying) // Menu fade in to menu loop transition
-        {
+        } else if (introPlaying && !menuIntro.isPlaying) { // Menu fade in to menu loop transition
             introPlaying = false;
+            menuIntro.Stop();
             menuLoop.Play();
         }
         if (hurtSFXCooldown > 0f) { // Record time since last SFX played
